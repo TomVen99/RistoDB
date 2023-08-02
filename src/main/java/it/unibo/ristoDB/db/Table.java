@@ -6,10 +6,10 @@ public class Table {
     private boolean busy;
     private int maxPeople;
 
-    public Table(int number, int maxPeople) {
+    public Table(int number, boolean busy, int maxPeople) {
         this.number = number;
         this.maxPeople = maxPeople;
-        busy = false;
+        this.busy = busy;
     }
 
     public int getNumber() {

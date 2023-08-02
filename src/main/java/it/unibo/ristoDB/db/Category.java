@@ -14,12 +14,16 @@ public class Category {
         this.products = products;
     }
 
+    public int getId() {
+        return id;
+    }   
+
     public String getName() {
         return name;
     }
 
     public List<Product> getProducts() {
         return products;
-    }   
+    }
     
 }

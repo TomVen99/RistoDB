@@ -10,12 +10,14 @@ public class Order {
     private Date date;
     private Time time;
     private List<Product> products;
+    private int tableNumber;
 
-    public Order(int id, Date date, Time time, List<Product> products) {
+    public Order(int id, Date date, Time time, List<Product> products, int tableNumber) {
         this.id = id;
         this.date = date;
         this.time = time;
         this.products = products;
+        this.tableNumber = tableNumber;
     }
 
     public Date getDate() {
