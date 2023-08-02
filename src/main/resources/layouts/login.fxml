@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <FlowPane alignment="CENTER" prefHeight="394.0" prefWidth="256.0" stylesheets="@../css/Login.css">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="app-icon" />
+            <Separator focusTraversable="false" prefHeight="20.0" prefWidth="200.0" visible="false" />
+            <TextField fx:id="username" promptText="Username" />
+            <PasswordField fx:id="password" promptText="Password" />
+            <Text fx:id="errorMessage" fill="RED" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password o nome utente errati" wrappingWidth="161.21630859375">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Separator focusTraversable="false" prefHeight="20.0" prefWidth="200.0" visible="false" />
+            <VBox prefHeight="86.0" prefWidth="113.0">
+               <children>
+                  <Button fx:id="fologinbutton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#frontOfficeLogin" text="Login Front Office">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="bologinbutton" mnemonicParsing="false" onAction="#backOfficeLogin" prefHeight="25.0" prefWidth="112.0" text="Login Back Office" />
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+   </left>
+</BorderPane>
