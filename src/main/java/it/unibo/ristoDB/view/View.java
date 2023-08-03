@@ -14,7 +14,7 @@ public interface View {
     void setFrontOfficeScene();
 
     /** Set order scene on stage and connect it to its controller. */
-    void setOrderScene();
+    void setOrderScene(int selectedTable);
 
     /**
      * Add a connection to a DB.

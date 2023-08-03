@@ -227,5 +227,11 @@ public class FeaturesImpl implements Features{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'viewBusyMoment'");
     }
+
+    @Override
+    public void addOrderDetails(int productId, int quantity) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addOrderDetails'");
+    }
     
 }

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.model.Features;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,11 +17,20 @@ public class FrontOfficeController {
 
     private ViewImpl view;
     private final Features features;
-    ObservableList<Table> tables;
+    ObservableList<Table> tables = FXCollections.observableArrayList();
 
     public FrontOfficeController(ViewImpl view, final Features features) {
         this.view = view;
         this.features = features;
+    }
+
+        @FXML
+    void initialize() {
+        orderButton.setDisable(true);
+        receiptButton.setDisable(true);
+        tables.add(new Table(0, false, 0));/*features.viewAllTables();*/
+        tables.add(new Table(1, false, 0));
+        tables.forEach(t->comboBoxSelectTable.getItems().add(t.getNumber()));
     }
 
     @FXML
@@ -30,10 +40,10 @@ public class FrontOfficeController {
     private URL location;
 
     @FXML
-    private Button OrderButton;
+    private Button orderButton;
 
     @FXML
-    private ComboBox<?> comboBoxSelectTable;
+    private ComboBox<Integer> comboBoxSelectTable;
 
     @FXML
     private Button receiptButton;
@@ -44,19 +54,21 @@ public class FrontOfficeController {
     @FXML
     private Button goToBOButton;
 
+    
+    @FXML
+    void enableButtons(ActionEvent event) {
+        orderButton.setDisable(false);
+        receiptButton.setDisable(false);
+    }
+
     @FXML
     void openOrderScene(ActionEvent event) {
-        view.setOrderScene();
+        view.setOrderScene(comboBoxSelectTable.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     void showReceipt(ActionEvent event) {
 
-    }
-
-    @FXML
-    void initialize() {
-        tables = features.viewAllTables();
     }
 
     @FXML

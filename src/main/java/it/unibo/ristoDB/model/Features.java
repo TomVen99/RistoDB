@@ -64,6 +64,11 @@ public interface Features {
     void removeProduct(int productId);
 
     /**
+     * Add an order
+     */
+    void addOrderDetails(int productId, int quantity);
+
+    /**
      * 
      * @return a map with the name of the best employee and how much he sells 
      */

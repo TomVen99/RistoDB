@@ -77,10 +77,12 @@ public class ViewImpl implements View{
     }
 
     @Override
-    public void setOrderScene() {
+    public void setOrderScene(final int selectedTable) {
         try {
             final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/orders.fxml"));
-            loader.setController(new OrdersController(this, features));
+            OrdersController ordersController = new OrdersController(this, features);
+            ordersController.setSelectedTable(selectedTable);
+            loader.setController(ordersController);
             final Parent root = loader.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);

@@ -21,8 +21,7 @@ public class LoginController {
     private final ViewImpl view;
 
     public LoginController(ViewImpl view) {
-        this.view = view;
-        
+        this.view = view;        
     }
 
     @FXML

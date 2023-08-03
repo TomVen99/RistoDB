@@ -32,7 +32,7 @@ public class BackOfficeController {
 
     @FXML
     void initialize() {
-        categories = features.viewAllCategory();
+        /*categories = features.viewAllCategory();
         products = features.viewAllProducts();
         /*categories.add(new Category(0, "uno", new ArrayList<>()));
         categories.add(new Category(1, "due", new ArrayList<>()));*/

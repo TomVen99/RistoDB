@@ -11,31 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Separator layoutY="19.0" prefHeight="8.0" prefWidth="724.0" />
-      <Button fx:id="addEmployeeButton" layoutX="296.0" layoutY="107.0" mnemonicParsing="false" onAction="#addEmployee" text="Aggiungi" />
-      <Label layoutX="1.0" layoutY="147.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci categoria">
-         <padding>
-            <Insets left="4.0" top="2.0" />
-         </padding>
-      </Label>
-      <Separator layoutY="140.0" prefHeight="8.0" prefWidth="375.0" />
-      <Separator layoutY="163.0" prefHeight="8.0" prefWidth="375.0" />
-      <Label layoutX="1.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci cameriere">
-         <padding>
-            <Insets left="4.0" top="2.0" />
-         </padding>
-      </Label>
       <TextField fx:id="employeeName" layoutX="36.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="nome">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </TextField>
-      <TextField fx:id="employeePassword" layoutX="211.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="password">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </TextField>
-      <TextField fx:id="employeeUser" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="utente">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -45,20 +21,25 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <Button fx:id="addCategoryButton" layoutX="296.0" layoutY="185.0" mnemonicParsing="false" onAction="#addCategory" text="Aggiungi" />
+      <TextField fx:id="employeeUser" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="utente">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <TextField fx:id="employeePassword" layoutX="211.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="password">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </TextField>
+      <Button fx:id="addEmployeeButton" layoutX="296.0" layoutY="107.0" mnemonicParsing="false" onAction="#addEmployee" text="Aggiungi" />
+      <Separator layoutY="19.0" prefHeight="8.0" prefWidth="724.0" />
       <TextField fx:id="categoryName" layoutX="36.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="nome categoria">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <Label layoutX="4.0" layoutY="227.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci prodotto">
-         <padding>
-            <Insets left="4.0" top="2.0" />
-         </padding>
-      </Label>
-      <Separator layoutY="220.0" prefHeight="8.0" prefWidth="375.0" />
-      <Separator layoutY="243.0" prefHeight="8.0" prefWidth="375.0" />
-      <Button fx:id="addProductButton" layoutX="296.0" layoutY="305.0" mnemonicParsing="false" onAction="#addProduct" text="Aggiungi" />
+      <Button fx:id="addCategoryButton" layoutX="296.0" layoutY="185.0" mnemonicParsing="false" onAction="#addCategory" text="Aggiungi" />
+      <Separator layoutY="140.0" prefHeight="8.0" prefWidth="375.0" />
       <TextField fx:id="productName" layoutX="36.0" layoutY="265.0" prefHeight="25.0" prefWidth="150.0" promptText="nome prodotto">
          <opaqueInsets>
             <Insets />
@@ -70,6 +51,25 @@
          </opaqueInsets>
       </TextField>
       <ComboBox fx:id="comboBoxCategoryAddProduct" layoutX="36.0" layoutY="305.0" prefWidth="150.0" promptText="Categoria" />
+      <Button fx:id="addProductButton" layoutX="296.0" layoutY="305.0" mnemonicParsing="false" onAction="#addProduct" text="Aggiungi" />
+      <Separator layoutY="163.0" prefHeight="8.0" prefWidth="375.0" />
+      <Label layoutX="1.0" layoutY="147.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci categoria">
+         <padding>
+            <Insets left="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label layoutX="1.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci cameriere">
+         <padding>
+            <Insets left="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label layoutX="4.0" layoutY="227.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci prodotto">
+         <padding>
+            <Insets left="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Separator layoutY="220.0" prefHeight="8.0" prefWidth="375.0" />
+      <Separator layoutY="243.0" prefHeight="8.0" prefWidth="375.0" />
       <Label layoutX="4.0" layoutY="345.0" prefHeight="19.0" prefWidth="130.0" text="Rimuovi prodotto">
          <padding>
             <Insets left="4.0" top="2.0" />
@@ -77,19 +77,19 @@
       </Label>
       <Separator layoutY="338.0" prefHeight="8.0" prefWidth="375.0" />
       <Separator layoutY="361.0" prefHeight="8.0" prefWidth="375.0" />
-      <Button fx:id="removeProductButton" layoutX="296.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeProduct" text="Rimuovi" />
       <ComboBox fx:id="comboBoxCategoryRemovingProduct" layoutX="36.0" layoutY="385.0" onAction="#updateProductComboBox" prefWidth="150.0" promptText="Categoria" />
       <ComboBox fx:id="comboBoxProductToRemove" layoutX="208.0" layoutY="385.0" prefWidth="150.0" promptText="Prodotto" />
+      <Button fx:id="removeProductButton" layoutX="296.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeProduct" text="Rimuovi" />
       <Separator layoutX="373.0" layoutY="1.0" orientation="VERTICAL" prefHeight="468.0" prefWidth="8.0" />
+      <Button fx:id="viewBestEmployeeButton" layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#viewBestEmployee" text="Visualizza cameriere che ha permesso più incasso oggi" />
       <Label layoutX="381.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Statistiche">
          <padding>
             <Insets left="4.0" top="2.0" />
          </padding>
       </Label>
-      <Button fx:id="viewBestEmployeeButton" layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#viewBestEmployee" text="Visualizza cameriere che ha permesso più incasso oggi" />
       <Separator layoutX="375.0" layoutY="101.0" prefHeight="8.0" prefWidth="349.0" />
       <Button fx:id="viewBestSellingProductsButton" layoutX="394.0" layoutY="120.0" mnemonicParsing="false" onAction="#viewBestSellingProducts" prefHeight="25.0" prefWidth="305.0" text="Visualizza i 5 prodotti più venduti" />
-      <TableView fx:id="viewBestSellingProductsTableView" layoutX="450.0" layoutY="157.0" prefHeight="157.0" prefWidth="200.0" />
+      <TableView fx:id="viewBestSellingProductsTableView" focusTraversable="false" layoutX="450.0" layoutY="157.0" prefHeight="157.0" prefWidth="200.0" />
       <Separator layoutX="375.0" layoutY="338.0" prefHeight="8.0" prefWidth="349.0" />
       <Button fx:id="viewMostBusyMomentButton" layoutX="393.0" layoutY="353.0" mnemonicParsing="false" onAction="#viewMostBusyMoment" prefHeight="25.0" prefWidth="305.0" text="Visualizza momento con maggiore affluenza" />
       <Label fx:id="viewMostBusyMomentLabel" layoutX="394.0" layoutY="390.0" prefHeight="25.0" prefWidth="305.0" text="Momento con maggiore affluenza alle ore 18" />
