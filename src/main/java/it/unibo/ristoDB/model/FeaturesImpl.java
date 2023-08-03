@@ -1,8 +1,10 @@
 package it.unibo.ristoDB.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,10 +72,11 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public ObservableList<Product> viewProductsByCategory(Category category) {
+    public ObservableList<Product> viewProductsByCategory(final int categoryId) {
         final String query = "SELECT * from Prodotti" +
-                            "WHERE Prodotti.idCategoria = " + category.getId();
-        try (Statement statement = connection.createStatement()) {
+                            "WHERE Prodotti.idCategoria = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, categoryId);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
@@ -86,11 +89,13 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public ObservableList<OrderDetail> viewOrderDetail(Table table) {
-        final String query = "SELECT * from Dettaglio_Ordini " +
-                            "WHERE Ordini.Numero_Tavolo = " + table.getNumber() +
-                            "AND Dettaglio_Ordini.ID_Ordine = Risultato.ID_Ordine";/*********** */
-        try (Statement statement = connection.createStatement()) {
+    public ObservableList<OrderDetail> viewOrderDetail(final int tableNumber) {
+        final String query = "SELECT * from Dettagli_Ordini " +
+                         "JOIN Ordini ON Dettagli_Ordini.ID_Ordine = Ordini.ID " +
+                         "JOIN Tavoli ON Tavoli.Numero_Tavolo = Ordini.Numero_Tavolo " +
+                         "WHERE Tavoli.Numero_Tavolo = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, tableNumber);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<OrderDetail> list = FXCollections.observableArrayList();
             while (result.next()) {
@@ -103,33 +108,109 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void removeEmployee(String name, String surname) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeEmployee'");
+    public void removeEmployee(final int employeeId) {
+        if (employeeId == 1) {
+            throw new IllegalArgumentException("cannot remove id = 1 ");
+        }
+        if (checkDependencies(employeeId)) {
+            handleDependencies(employeeId);
+        }
+        final String query = "DELETE FROM Camerireri WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, employeeId);
+            statement.executeUpdate();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private boolean checkDependencies(final int employeeId) {
+        final String query = "SELECT * FROM Fattura WHERE id_fornitore = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, employeeId);
+            return statement.executeQuery().next();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void handleDependencies(final int employeeId) {
+        final String query = "UPDATE Fattura SET id_fornitore = 1 "
+                + "WHERE id_fornitore = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, employeeId);
+            statement.executeUpdate();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
-    public void addEmployee(String name, String surname) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addEmployee'");
+    public void addEmployee(final String firstName, final String lastName, final String username, final String password) {
+        final String query = "INSERT INTO Camerireri "
+                + "(nome, cognome, username, password) "
+                + " VALUES (?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setString(3, username);
+            statement.setString(4, password);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+
     }
 
     @Override
-    public void addCategory(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCategory'");
+    public void addCategory(String categoryName) {
+        final String query = "INSERT INTO Categorie "
+                + "(nome) "
+                + " VALUES (?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setString(1, categoryName);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
-    public void addCategory(String name, float price, Category category) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCategory'");
+    public void addProduct(String name, float price, int categoryId) {
+        final String query = "INSERT INTO Prodotti "
+                + "(nome, prezzo, ID_Categoria) "
+                + " VALUES (?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setString(1, name);
+            statement.setFloat(2, price);
+            statement.setInt(3, category.getId());
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
     public void removeProduct(String productName, String CategoryName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeProduct'");
+        if (employeeId == 1) {
+            throw new IllegalArgumentException("cannot remove id = 1 ");
+        }
+        if (checkDependencies(employeeId)) {
+            handleDependencies(employeeId);
+        }
+        final String query = "DELETE FROM Camerireri WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, employeeId);
+            statement.executeUpdate();
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override

@@ -31,22 +31,22 @@ public interface Features {
      * @param category to filter products
      * @return a list of Products appertain to the category
      */
-    ObservableList<Product> viewProductsByCategory(Category category);
+    ObservableList<Product> viewProductsByCategory(int categoryId);
 
     /**
      * @return a list of Products
      */
-    ObservableList<OrderDetail> viewOrderDetail(Table table);
+    ObservableList<OrderDetail> viewOrderDetail(int tableNumber);
 
     /**
      * Remove an Employee
      */
-    void removeEmployee(String name, String surname);
+    void removeEmployee(int employeeId);
 
     /**
      * Add an Employee
      */
-    void addEmployee(String name, String surname);
+    void addEmployee(String name, String surname, String username, String password);
 
     /**
      * Add Category
@@ -56,7 +56,7 @@ public interface Features {
     /**
      * Add product
      */
-    void addCategory(String name, float price, Category category);
+    void addProduct(String name, float price, int categoryId);
 
     /**
      * Remove Product
