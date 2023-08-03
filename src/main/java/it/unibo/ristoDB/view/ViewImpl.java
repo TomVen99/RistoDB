@@ -3,6 +3,8 @@ package it.unibo.ristoDB.view;
 import java.io.IOException;
 import java.sql.Connection;
 
+import it.unibo.ristoDB.model.Features;
+import it.unibo.ristoDB.model.FeaturesImpl;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +13,7 @@ import javafx.stage.Stage;
 
 public class ViewImpl implements View{
 
-
+    private Features features;
     private final Stage stage;
 
     /**
@@ -45,7 +47,7 @@ public class ViewImpl implements View{
     public void setBackOfficeScene() {
         try {
             final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/backOffice.fxml"));
-            loader.setController(new BackOfficeController(this));//, features));
+            loader.setController(new BackOfficeController(this, features));
             final Parent root = loader.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -59,7 +61,7 @@ public class ViewImpl implements View{
     public void setFrontOfficeScene() {
         try {
             final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/frontOffice.fxml"));
-            loader.setController(new FrontOfficeController(this, stage));//, features));
+            loader.setController(new FrontOfficeController(this, features));
             final Parent root = loader.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -71,7 +73,20 @@ public class ViewImpl implements View{
     /** {@inheritDoc} */
     @Override
     public void addConnection(final Connection connection) {
-        //features = new FeaturesImpl(connection);
+        features = new FeaturesImpl(connection);
+    }
+
+    @Override
+    public void setOrderScene() {
+        try {
+            final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/orders.fxml"));
+            loader.setController(new OrdersController(this, features));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     

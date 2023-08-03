@@ -217,7 +217,7 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public ObservableList<Product> viewBestFiveProducts() {
+    public ObservableList<Product> viewBestSellingProducts() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'viewBestFiveProducts'");
     }

@@ -73,7 +73,7 @@ public interface Features {
      * 
      * @return a list with best seller products
      */
-    ObservableList<Product> viewBestFiveProducts();
+    ObservableList<Product> viewBestSellingProducts();
 
     /**
      * 

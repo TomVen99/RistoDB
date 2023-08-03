@@ -1,26 +1,26 @@
 package it.unibo.ristoDB.view;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.unibo.ristoDB.db.Table;
+import it.unibo.ristoDB.model.Features;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 public class FrontOfficeController {
 
     private ViewImpl view;
-    private Stage stage;
+    private final Features features;
+    ObservableList<Table> tables;
 
-    public FrontOfficeController(ViewImpl view, Stage stage) {
+    public FrontOfficeController(ViewImpl view, final Features features) {
         this.view = view;
-        this.stage = stage;
+        this.features = features;
     }
 
     @FXML
@@ -42,16 +42,11 @@ public class FrontOfficeController {
     private Label total;
 
     @FXML
+    private Button goToBOButton;
+
+    @FXML
     void openOrderScene(ActionEvent event) {
-        try {
-            final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/orders.fxml"));
-            loader.setController(new OrdersController(view));
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        view.setOrderScene();
     }
 
     @FXML
@@ -61,10 +56,12 @@ public class FrontOfficeController {
 
     @FXML
     void initialize() {
+        tables = features.viewAllTables();
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    @FXML
+    void goToBackOffice(ActionEvent event) {
+        view.setBackOfficeScene();
     }
 
 }

@@ -58,5 +58,6 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="goToBOButton" layoutX="34.0" layoutY="403.0" mnemonicParsing="false" onAction="#goToBackOffice" prefHeight="25.0" prefWidth="130.0" text="Vai al BackOffice" />
    </children>
 </AnchorPane>

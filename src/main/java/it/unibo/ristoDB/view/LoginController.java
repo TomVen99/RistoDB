@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.ResourceBundle;
 
 import it.unibo.ristoDB.db.ConnectionProvider;
+import it.unibo.ristoDB.model.Features;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,7 +21,8 @@ public class LoginController {
     private final ViewImpl view;
 
     public LoginController(ViewImpl view) {
-        this.view = view;   
+        this.view = view;
+        
     }
 
     @FXML

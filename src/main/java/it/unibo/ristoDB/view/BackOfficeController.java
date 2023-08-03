@@ -1,7 +1,14 @@
 package it.unibo.ristoDB.view;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import it.unibo.ristoDB.db.Category;
+import it.unibo.ristoDB.db.Product;
+import it.unibo.ristoDB.model.Features;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,9 +19,28 @@ import javafx.scene.control.TextField;
 
 public class BackOfficeController {
 
+    private final Features features;
     private ViewImpl view;
-    public BackOfficeController(ViewImpl view) {
+    ObservableList<Category> categories = FXCollections.observableArrayList();
+    ObservableList<Product> products;
+    ObservableList<Product> productsByCategory;
+
+    public BackOfficeController(ViewImpl view, Features features) {
         this.view = view;
+        this.features = features;
+    }
+
+    @FXML
+    void initialize() {
+        categories = features.viewAllCategory();
+        products = features.viewAllProducts();
+        /*categories.add(new Category(0, "uno", new ArrayList<>()));
+        categories.add(new Category(1, "due", new ArrayList<>()));*/
+        categories.forEach(c-> {
+            comboBoxCategoryAddProduct.getItems().add(c.getName());
+            comboBoxCategoryRemovingProduct.getItems().add(c.getName());
+        });
+
     }
 
     @FXML
@@ -33,19 +59,22 @@ public class BackOfficeController {
     private Button addProductButton;
 
     @FXML
-    private Button addProductButton1;
+    private Button goToFOButton;
+
+    @FXML
+    private Button removeProductButton;
 
     @FXML
     private TextField categoryName;
 
     @FXML
-    private ComboBox<?> comboBoxCategoryAddProduct;
+    private ComboBox<String> comboBoxCategoryAddProduct;
 
     @FXML
-    private ComboBox<?> comboBoxCategoryRemovingProduct;
+    private ComboBox<String> comboBoxCategoryRemovingProduct;
 
     @FXML
-    private ComboBox<?> comboBoxProductToRemove;
+    private ComboBox<String> comboBoxProductToRemove;
 
     @FXML
     private TextField employeeName;
@@ -54,7 +83,7 @@ public class BackOfficeController {
     private TextField employeePassword;
 
     @FXML
-    private TextField employeeSurname;
+    private TextField employeeLastname;
 
     @FXML
     private TextField employeeUser;
@@ -81,37 +110,71 @@ public class BackOfficeController {
     private Label viewMostBusyMomentLabel;
 
     @FXML
-    void addCategory(ActionEvent event) {
-
-    }
-
-    @FXML
     void addEmployee(ActionEvent event) {
+        features.addEmployee(
+            employeeName.getText(),
+            employeeLastname.getText(),
+            employeeUser.getText(),
+            employeePassword.getText());
+        
+        employeeName.clear();
+        employeeLastname.clear();
+        employeeUser.clear();
+        employeePassword.clear();
+    }
+
+    @FXML
+    void addCategory(ActionEvent event) {
+        System.out.println(categoryName.getText());
+        categoryName.clear();
+        features.addCategory(categoryName.getText());
+    }
+
+    @FXML
+    void addProduct(ActionEvent event) {
+        /*features.addProduct(productName.getText(),
+                             Float.parseFloat(productPrice.getText()),
+                             categories.get(comboBoxCategoryAddProduct.getSelectionModel().getSelectedIndex()).getId());*/
+        productName.clear();
+        productPrice.clear();
+        comboBoxCategoryAddProduct.getSelectionModel().clearSelection();
+        this.initialize();
+    }
+
+    @FXML
+    void updateProductComboBox(ActionEvent event) {
+            /*productsByCategory = features.viewProductsByCategory(
+                categories.get(comboBoxCategoryRemovingProduct.getSelectionModel().getSelectedIndex()).getId());*/
+        productsByCategory.forEach(p->comboBoxProductToRemove.getItems().add(p.getName()));
+    }
+
+    @FXML
+    void removeProduct(ActionEvent event) {
+        features.removeProduct(productsByCategory.get(comboBoxProductToRemove
+            .getSelectionModel().getSelectedIndex()).getId());
+        comboBoxProductToRemove.getItems().clear();
+        this.initialize();
+    }
+
+    @FXML
+    void viewBestEmployee(ActionEvent event) {
+        features.viewBestEmployee(); /*mi ritornerebbe una mappa */
+    }
+
+    @FXML
+    void viewBestSellingProducts(ActionEvent event) {
+        /*viewBestSellingProductsTableView.
+        features.viewBestSellingProducts();*/
+    }
+
+    @FXML
+    void viewMostBusyMoment(ActionEvent event) {
 
     }
 
     @FXML
-    void initialize() {
-        assert addCategoryButton != null : "fx:id=\"addCategoryButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert addEmployeeButton != null : "fx:id=\"addEmployeeButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert addProductButton != null : "fx:id=\"addProductButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert addProductButton1 != null : "fx:id=\"addProductButton1\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert categoryName != null : "fx:id=\"categoryName\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert comboBoxCategoryAddProduct != null : "fx:id=\"comboBoxCategoryAddProduct\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert comboBoxCategoryRemovingProduct != null : "fx:id=\"comboBoxCategoryRemovingProduct\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert comboBoxProductToRemove != null : "fx:id=\"comboBoxProductToRemove\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert employeeName != null : "fx:id=\"employeeName\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert employeePassword != null : "fx:id=\"employeePassword\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert employeeSurname != null : "fx:id=\"employeeSurname\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert employeeUser != null : "fx:id=\"employeeUser\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert productName != null : "fx:id=\"productName\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert productPrice != null : "fx:id=\"productPrice\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert viewBestEmployeeButton != null : "fx:id=\"viewBestEmployeeButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert viewBestSellingProductsButton != null : "fx:id=\"viewBestSellingProductsButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert viewBestSellingProductsTableView != null : "fx:id=\"viewBestSellingProductsTableView\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert viewMostBusyMomentButton != null : "fx:id=\"viewMostBusyMomentButton\" was not injected: check your FXML file 'backOffice.fxml'.";
-        assert viewMostBusyMomentLabel != null : "fx:id=\"viewMostBusyMomentLabel\" was not injected: check your FXML file 'backOffice.fxml'.";
-
+    void goToFrontOffice(ActionEvent event) {
+        view.setFrontOfficeScene();
     }
 
 }

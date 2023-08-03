@@ -40,7 +40,7 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="employeeSurname" layoutX="211.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="cognome">
+      <TextField fx:id="employeeLastname" layoutX="211.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="cognome">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -58,7 +58,7 @@
       </Label>
       <Separator layoutY="220.0" prefHeight="8.0" prefWidth="375.0" />
       <Separator layoutY="243.0" prefHeight="8.0" prefWidth="375.0" />
-      <Button fx:id="addProductButton" layoutX="296.0" layoutY="305.0" mnemonicParsing="false" onAction="#addCategory" text="Aggiungi" />
+      <Button fx:id="addProductButton" layoutX="296.0" layoutY="305.0" mnemonicParsing="false" onAction="#addProduct" text="Aggiungi" />
       <TextField fx:id="productName" layoutX="36.0" layoutY="265.0" prefHeight="25.0" prefWidth="150.0" promptText="nome prodotto">
          <opaqueInsets>
             <Insets />
@@ -69,7 +69,7 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <ComboBox fx:id="comboBoxCategoryAddProduct" layoutX="36.0" layoutY="305.0" prefWidth="150.0" promptText="categoria" />
+      <ComboBox fx:id="comboBoxCategoryAddProduct" layoutX="36.0" layoutY="305.0" prefWidth="150.0" promptText="Categoria" />
       <Label layoutX="4.0" layoutY="345.0" prefHeight="19.0" prefWidth="130.0" text="Rimuovi prodotto">
          <padding>
             <Insets left="4.0" top="2.0" />
@@ -77,22 +77,23 @@
       </Label>
       <Separator layoutY="338.0" prefHeight="8.0" prefWidth="375.0" />
       <Separator layoutY="361.0" prefHeight="8.0" prefWidth="375.0" />
-      <Button fx:id="addProductButton1" layoutX="296.0" layoutY="423.0" mnemonicParsing="false" onAction="#addCategory" text="Rimuovi" />
-      <ComboBox fx:id="comboBoxCategoryRemovingProduct" layoutX="36.0" layoutY="385.0" prefWidth="150.0" promptText="categoria" />
-      <ComboBox fx:id="comboBoxProductToRemove" layoutX="208.0" layoutY="385.0" prefWidth="150.0" promptText="prodotto" />
+      <Button fx:id="removeProductButton" layoutX="296.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeProduct" text="Rimuovi" />
+      <ComboBox fx:id="comboBoxCategoryRemovingProduct" layoutX="36.0" layoutY="385.0" onAction="#updateProductComboBox" prefWidth="150.0" promptText="Categoria" />
+      <ComboBox fx:id="comboBoxProductToRemove" layoutX="208.0" layoutY="385.0" prefWidth="150.0" promptText="Prodotto" />
       <Separator layoutX="373.0" layoutY="1.0" orientation="VERTICAL" prefHeight="468.0" prefWidth="8.0" />
       <Label layoutX="381.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Statistiche">
          <padding>
             <Insets left="4.0" top="2.0" />
          </padding>
       </Label>
-      <Button fx:id="viewBestEmployeeButton" layoutX="394.0" layoutY="34.0" mnemonicParsing="false" text="Visualizza cameriere che ha permesso più incasso oggi" />
+      <Button fx:id="viewBestEmployeeButton" layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#viewBestEmployee" text="Visualizza cameriere che ha permesso più incasso oggi" />
       <Separator layoutX="375.0" layoutY="101.0" prefHeight="8.0" prefWidth="349.0" />
-      <Button fx:id="viewBestSellingProductsButton" layoutX="394.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="305.0" text="Visualizza i 5 prodotti più venduti" />
+      <Button fx:id="viewBestSellingProductsButton" layoutX="394.0" layoutY="120.0" mnemonicParsing="false" onAction="#viewBestSellingProducts" prefHeight="25.0" prefWidth="305.0" text="Visualizza i 5 prodotti più venduti" />
       <TableView fx:id="viewBestSellingProductsTableView" layoutX="450.0" layoutY="157.0" prefHeight="157.0" prefWidth="200.0" />
       <Separator layoutX="375.0" layoutY="338.0" prefHeight="8.0" prefWidth="349.0" />
-      <Button fx:id="viewMostBusyMomentButton" layoutX="393.0" layoutY="353.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="305.0" text="Visualizza momento con maggiore affluenza" />
-      <Label fx:id="viewMostBusyMomentLabel" layoutX="394.0" layoutY="398.0" prefHeight="25.0" prefWidth="287.0" text="Periodo" />
+      <Button fx:id="viewMostBusyMomentButton" layoutX="393.0" layoutY="353.0" mnemonicParsing="false" onAction="#viewMostBusyMoment" prefHeight="25.0" prefWidth="305.0" text="Visualizza momento con maggiore affluenza" />
+      <Label fx:id="viewMostBusyMomentLabel" layoutX="394.0" layoutY="390.0" prefHeight="25.0" prefWidth="305.0" text="Momento con maggiore affluenza alle ore 18" />
       <Label layoutX="402.0" layoutY="73.0" prefHeight="25.0" prefWidth="287.0" text="Nome e Incasso" />
+      <Button fx:id="goToFOButton" layoutX="590.0" layoutY="423.0" mnemonicParsing="false" onAction="#goToFrontOffice" text="Vai al FrontOffice" />
    </children>
 </AnchorPane>

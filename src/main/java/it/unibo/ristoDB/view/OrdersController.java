@@ -2,6 +2,8 @@ package it.unibo.ristoDB.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.unibo.ristoDB.model.Features;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,9 +15,11 @@ import javafx.scene.control.TextField;
 public class OrdersController {
 
     private ViewImpl view;
+    private final Features features;
 
-    public OrdersController(ViewImpl view){
+    public OrdersController(ViewImpl view, Features features){
         this.view = view;
+        this.features = features;
     }
 
     @FXML
