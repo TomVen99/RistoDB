@@ -61,7 +61,7 @@ public interface Features {
     /**
      * Remove Product
      */
-    void removeProduct(String productName, String CategoryName);
+    void removeProduct(int productId);
 
     /**
      * 

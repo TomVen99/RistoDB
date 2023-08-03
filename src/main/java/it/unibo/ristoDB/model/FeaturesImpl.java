@@ -187,7 +187,7 @@ public class FeaturesImpl implements Features{
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, name);
             statement.setFloat(2, price);
-            statement.setInt(3, category.getId());
+            statement.setInt(3, categoryId);
             statement.executeUpdate();
         } catch (final SQLIntegrityConstraintViolationException e) {
             throw new IllegalArgumentException(e);
@@ -197,16 +197,13 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void removeProduct(String productName, String CategoryName) {
-        if (employeeId == 1) {
-            throw new IllegalArgumentException("cannot remove id = 1 ");
+    public void removeProduct(final int productId) {
+        if (checkDependencies(productId)) {
+            handleDependencies(productId);
         }
-        if (checkDependencies(employeeId)) {
-            handleDependencies(employeeId);
-        }
-        final String query = "DELETE FROM Camerireri WHERE id = ?";
+        final String query = "DELETE FROM Prodotti WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, employeeId);
+            statement.setInt(1, productId);
             statement.executeUpdate();
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
