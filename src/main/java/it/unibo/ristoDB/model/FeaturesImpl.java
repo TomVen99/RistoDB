@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,12 +29,12 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<Category> viewAllCategory() {
-        final String query = "SELECT * from Categorie";
+        final String query = "SELECT * from Categories";
         try (Statement statement = connection.createStatement()) {
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Category> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Category(result.getInt("id"), result.getString("nome"), new ArrayList<Product>()));
+                list.add(new Category(result.getInt("ID"), result.getString("Name"), new ArrayList<Product>()));
             }
             return list;
         } catch (final SQLException e) {
@@ -43,12 +44,12 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<Table> viewAllTables() {
-        final String query = "SELECT * from Tavoli";
+        final String query = "SELECT * from Tables";
         try (Statement statement = connection.createStatement()) {
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Table> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Table(result.getInt("numero"), result.getBoolean("occupato"), result.getInt("Max_Pers")));
+                list.add(new Table(result.getInt("Number"), result.getBoolean("Busy"), result.getInt("Max_People")));
             }
             return list;
         } catch (final SQLException e) {
@@ -58,12 +59,12 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<Product> viewAllProducts() {
-        final String query = "SELECT * from Prodotti";
+        final String query = "SELECT * from Products";
         try (Statement statement = connection.createStatement()) {
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("id"), result.getString("nome"), result.getFloat("prezzo"), result.getInt("ID_Categoria")));
+                list.add(new Product(result.getInt("ID"), result.getString("Name"), result.getFloat("Price"), result.getInt("Category_ID")));
             }
             return list;
         } catch (final SQLException e) {
@@ -73,14 +74,14 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<Product> viewProductsByCategory(final int categoryId) {
-        final String query = "SELECT * from Prodotti" +
-                            "WHERE Prodotti.idCategoria = ?";
+        final String query = "SELECT * from Products" +
+                            "WHERE Products.Category_ID = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, categoryId);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("id"), result.getString("nome"), result.getFloat("prezzo"), result.getInt("ID_Categoria")));
+                list.add(new Product(result.getInt("ID"), result.getString("Name"), result.getFloat("Price"), result.getInt("Category_ID")));
             }
             return list;
         } catch (final SQLException e) {
@@ -90,16 +91,16 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<OrderDetail> viewOrderDetail(final int tableNumber) {
-        final String query = "SELECT * from Dettagli_Ordini " +
-                         "JOIN Ordini ON Dettagli_Ordini.ID_Ordine = Ordini.ID " +
-                         "JOIN Tavoli ON Tavoli.Numero_Tavolo = Ordini.Numero_Tavolo " +
-                         "WHERE Tavoli.Numero_Tavolo = ?";
+        final String query = "SELECT * from Orders_Details " +
+                         "JOIN Orders ON Orders_Details.Order_ID = Orders.ID " +
+                         "JOIN Tables ON Tables.Table_Number = Orders.Table_Number " +
+                         "WHERE Tables.Table_Number = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, tableNumber);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<OrderDetail> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new OrderDetail(result.getInt("ID_Ordine"), new HashMap<>()));
+                list.add(new OrderDetail(result.getInt("Order_ID"), new HashMap<>()));
             }
             return list;
         } catch (final SQLException e) {
@@ -115,7 +116,7 @@ public class FeaturesImpl implements Features{
         if (checkDependencies(employeeId)) {
             handleDependencies(employeeId);
         }
-        final String query = "DELETE FROM Camerireri WHERE id = ?";
+        final String query = "DELETE FROM Employee WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, employeeId);
             statement.executeUpdate();
@@ -124,6 +125,7 @@ public class FeaturesImpl implements Features{
         }
     }
 
+    /******* */
     private boolean checkDependencies(final int employeeId) {
         final String query = "SELECT * FROM Fattura WHERE id_fornitore = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -134,6 +136,7 @@ public class FeaturesImpl implements Features{
         }
     }
 
+    /****** */
     private void handleDependencies(final int employeeId) {
         final String query = "UPDATE Fattura SET id_fornitore = 1 "
                 + "WHERE id_fornitore = ?";
@@ -145,16 +148,17 @@ public class FeaturesImpl implements Features{
         }
     }
 
+    /*****Devo verificapre se l'user va bene e non è duplicato */
     @Override
     public void addEmployee(final String firstName, final String lastName, final String username, final String password) {
-        final String query = "INSERT INTO Camerireri "
-                + "(nome, cognome, username, password) "
-                + " VALUES (?,?,?,?)";
+        final String query = "INSERT INTO Employee "
+                + "(Name, LastName) "
+                + " VALUES (?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, firstName);
             statement.setString(2, lastName);
-            statement.setString(3, username);
-            statement.setString(4, password);
+            /*statement.setString(3, username);
+            statement.setString(4, password);*/
             statement.executeUpdate();
         } catch (final SQLIntegrityConstraintViolationException e) {
             throw new IllegalArgumentException(e);
@@ -166,8 +170,8 @@ public class FeaturesImpl implements Features{
 
     @Override
     public void addCategory(String categoryName) {
-        final String query = "INSERT INTO Categorie "
-                + "(nome) "
+        final String query = "INSERT INTO Categories "
+                + "(Description) "
                 + " VALUES (?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, categoryName);
@@ -181,8 +185,8 @@ public class FeaturesImpl implements Features{
 
     @Override
     public void addProduct(String name, float price, int categoryId) {
-        final String query = "INSERT INTO Prodotti "
-                + "(nome, prezzo, ID_Categoria) "
+        final String query = "INSERT INTO Products "
+                + "(Name, Price, Category_ID) "
                 + " VALUES (?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, name);
@@ -201,7 +205,7 @@ public class FeaturesImpl implements Features{
         if (checkDependencies(productId)) {
             handleDependencies(productId);
         }
-        final String query = "DELETE FROM Prodotti WHERE id = ?";
+        final String query = "DELETE FROM Products WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, productId);
             statement.executeUpdate();
@@ -232,6 +236,18 @@ public class FeaturesImpl implements Features{
     public void addOrderDetails(int productId, int quantity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addOrderDetails'");
+    }
+
+    @Override
+    public void showReceipt(int tableNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'showReceipt'");
+    }
+
+    @Override
+    public void addOrder(Date date, Time time, int tableNumber, int employeeId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
     }
     
 }

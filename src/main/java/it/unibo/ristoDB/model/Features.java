@@ -1,5 +1,6 @@
 package it.unibo.ristoDB.model;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
@@ -64,9 +65,19 @@ public interface Features {
     void removeProduct(int productId);
 
     /**
-     * Add an order
+     * Add an order detail
      */
     void addOrderDetails(int productId, int quantity);
+
+    /**
+     * Add an order
+     */
+    void addOrder(Date date, Time time, int tableNumber, int employeeId);
+
+    /**
+     * Show total of the receipt
+     */
+    void showReceipt(int tableNumber);
 
     /**
      * 

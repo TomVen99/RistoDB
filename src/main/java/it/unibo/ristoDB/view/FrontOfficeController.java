@@ -68,7 +68,7 @@ public class FrontOfficeController {
 
     @FXML
     void showReceipt(ActionEvent event) {
-
+        
     }
 
     @FXML

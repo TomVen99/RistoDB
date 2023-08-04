@@ -9,43 +9,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="508.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="31.0" layoutY="28.0" prefHeight="26.0" prefWidth="130.0" text="Seleziona categoria:" />
-      <ComboBox fx:id="comboBoxCategories" layoutX="228.0" layoutY="28.0" onAction="#enableComboBoxProducts" prefWidth="150.0" />
-      <ComboBox fx:id="comboBoxProducts" layoutX="228.0" layoutY="65.0" onAction="#setDefaultQuantity" prefWidth="150.0" />
-      <TextField fx:id="quantityToAdd" layoutX="228.0" layoutY="105.0" prefHeight="25.0" prefWidth="150.0" />
-      <Button fx:id="addProductToOrderButton" layoutX="313.0" layoutY="146.0" mnemonicParsing="false" onAction="#addProductToOrder" text="Aggiungi" />
+      <Label layoutX="31.0" layoutY="34.0" prefHeight="26.0" prefWidth="130.0" text="Seleziona categoria:" />
+      <ComboBox fx:id="comboBoxCategories" layoutX="228.0" layoutY="35.0" onAction="#enableComboBoxProducts" prefWidth="150.0" />
+      <ComboBox fx:id="comboBoxProducts" layoutX="228.0" layoutY="72.0" onAction="#showQuantityAlreadyOrdered" prefWidth="150.0" />
+      <TextField fx:id="newQuantity" layoutX="228.0" layoutY="112.0" prefHeight="25.0" prefWidth="150.0" />
+      <Button fx:id="modifyOrderButton" layoutX="313.0" layoutY="151.0" mnemonicParsing="false" onAction="#modifyOrder" prefHeight="25.0" prefWidth="65.0" text="Salva" />
       <Separator layoutY="19.0" prefHeight="8.0" prefWidth="416.0" />
-      <Separator layoutY="364.0" prefHeight="8.0" prefWidth="416.0" />
-      <ComboBox fx:id="comboBoxSelectProductsToModify" layoutX="228.0" layoutY="221.0" onAction="#enableModifyOrderSection" prefWidth="150.0" />
-      <TextField fx:id="newQuantity" layoutX="228.0" layoutY="301.0" prefHeight="25.0" prefWidth="150.0" />
-      <Button fx:id="updateOrderButton" layoutX="310.0" layoutY="335.0" mnemonicParsing="false" onAction="#modifyOrder" prefHeight="25.0" prefWidth="65.0" text="Salva" />
-      <Label layoutX="1.0" layoutY="372.0" prefHeight="19.0" prefWidth="150.0" text="Prodotti già in ordine">
+      <Separator layoutY="189.0" prefHeight="8.0" prefWidth="416.0" />
+      <Label layoutX="1.0" layoutY="197.0" prefHeight="19.0" prefWidth="150.0" text="Prodotti già in ordine">
          <padding>
             <Insets left="4.0" />
          </padding>
       </Label>
-      <Separator layoutY="387.0" prefHeight="8.0" prefWidth="416.0" />
-      <TableView fx:id="productsAlreadyOrdered" focusTraversable="false" layoutX="36.0" layoutY="405.0" prefHeight="143.0" prefWidth="344.0" />
-      <Label layoutX="31.0" layoutY="65.0" prefHeight="26.0" prefWidth="130.0" text="Seleziona prodotto:" />
-      <Label layoutX="31.0" layoutY="104.0" prefHeight="26.0" prefWidth="130.0" text="Inserisci quantità:" />
-      <Label layoutX="1.0" layoutY="185.0" prefHeight="19.0" prefWidth="130.0" text="Rimuovi prodotti">
+      <Separator layoutY="212.0" prefHeight="8.0" prefWidth="416.0" />
+      <TableView fx:id="productsAlreadyOrdered" focusTraversable="false" layoutX="36.0" layoutY="230.0" prefHeight="224.0" prefWidth="344.0" />
+      <Label layoutX="31.0" layoutY="71.0" prefHeight="26.0" prefWidth="130.0" text="Seleziona prodotto:" />
+      <Label layoutX="31.0" layoutY="111.0" prefHeight="26.0" prefWidth="130.0" text="Inserisci quantità:" />
+      <Label layoutX="1.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Modifica ordine">
          <padding>
             <Insets left="4.0" top="2.0" />
          </padding>
       </Label>
-      <Separator layoutY="178.0" prefHeight="8.0" prefWidth="416.0" />
-      <Separator layoutY="201.0" prefHeight="8.0" prefWidth="416.0" />
-      <Label layoutX="22.0" layoutY="219.0" prefHeight="26.0" prefWidth="130.0" text="Seleziona prodotto:" />
-      <Label layoutX="22.0" layoutY="300.0" prefHeight="26.0" prefWidth="138.0" text="Inserisci nuova quantità:" />
-      <Label layoutX="1.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Aggiungi prodotti">
-         <padding>
-            <Insets left="4.0" top="2.0" />
-         </padding>
-      </Label>
-      <Label layoutX="22.0" layoutY="260.0" prefHeight="26.0" prefWidth="130.0" text="Quantità in ordine:" />
-      <Label fx:id="quantityAlreadyOrdered" layoutX="228.0" layoutY="262.0" prefHeight="26.0" prefWidth="150.0" />
-      <Button fx:id="backButton" layoutX="313.0" layoutY="555.0" mnemonicParsing="false" onAction="#setFrontOfficeScene" prefHeight="25.0" prefWidth="65.0" text="Indietro" />
+      <Button fx:id="backButton" layoutX="313.0" layoutY="469.0" mnemonicParsing="false" onAction="#setFrontOfficeScene" prefHeight="25.0" prefWidth="65.0" text="Indietro" />
    </children>
 </AnchorPane>

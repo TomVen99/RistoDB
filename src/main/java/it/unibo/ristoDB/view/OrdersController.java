@@ -41,19 +41,8 @@ public class OrdersController {
         categories.forEach(c->comboBoxCategories.getItems().add(c.getName()));
         newQuantity.setDisable(true);
         comboBoxProducts.setDisable(true);
-        addProductToOrderButton.setDisable(true);
-        quantityToAdd.setDisable(true);
-        updateOrderButton.setDisable(true);
+        modifyOrderButton.setDisable(true);
     }
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button addProductToOrderButton;
 
     @FXML
     private Button backButton;
@@ -65,22 +54,13 @@ public class OrdersController {
     private ComboBox<String> comboBoxProducts;
 
     @FXML
-    private ComboBox<String> comboBoxSelectProductsToModify;
+    private Button modifyOrderButton;
 
     @FXML
     private TextField newQuantity;
 
     @FXML
     private TableView<?> productsAlreadyOrdered;
-
-    @FXML
-    private Label quantityAlreadyOrdered;
-
-    @FXML
-    private TextField quantityToAdd;
-
-    @FXML
-    private Button updateOrderButton;
 
     @FXML
     void enableComboBoxProducts(ActionEvent event) {
@@ -91,19 +71,19 @@ public class OrdersController {
     }
 
     @FXML
-    void setDefaultQuantity(ActionEvent event) {
-        quantityToAdd.setText("0");
-        addProductToOrderButton.setDisable(false);
+    void showQuantityAlreadyOrdered(ActionEvent event) {
+        newQuantity.setText("0");
+        modifyOrderButton.setDisable(false);
     }
 
     @FXML
-    void addProductToOrder(ActionEvent event) {
+    void modifyOrder(ActionEvent event) {
         /*DEVO VERIFICARE SE ESISE UN ORDINE DI QUEL TAVOLO.
          * SE ESISTE DEVO FAR VEDERE L'ORDINE IN TABELLA E QUINDI FARE UNA MODIFICA DELL'ORDINE
          * SE NON ESISTE DEVO CREARE UN NUOVO ORDINE E COLLEGARGLI I VARI DETTAGLI ORDINI
          */
         int productId = productsByCategory.get(comboBoxProducts.getSelectionModel().getSelectedIndex()).getId();
-        features.addOrderDetails(productId, Integer.parseInt(quantityToAdd.getText()));
+        features.addOrderDetails(productId, Integer.parseInt(newQuantity.getText()));
     }
 
     
@@ -111,12 +91,7 @@ public class OrdersController {
     void enableModifyOrderSection(ActionEvent event) {
         newQuantity.setDisable(false);
         newQuantity.setText("0");
-        updateOrderButton.setDisable(false);
-    }
-
-    @FXML
-    void modifyOrder(ActionEvent event) {
-
+        modifyOrderButton.setDisable(false);
     }
 
     @FXML
