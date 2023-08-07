@@ -1,9 +1,12 @@
 package it.unibo.ristoDB.view;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import it.unibo.ristoDB.db.Category;
 import it.unibo.ristoDB.db.Product;
@@ -24,9 +27,9 @@ public class BackOfficeController {
     private final Features features;
     private ViewImpl view;
     ObservableList<Category> categories = FXCollections.observableArrayList();
-    ObservableList<Product> products;
-    ObservableList<Product> productsByCategory;
-    ObservableList<Date> dates;
+    ObservableList<Product> products = FXCollections.observableArrayList();
+    ObservableList<Product> productsByCategory = FXCollections.observableArrayList();
+    ObservableList<Date> dates = FXCollections.observableArrayList();
 
     public BackOfficeController(ViewImpl view, Features features) {
         this.view = view;
@@ -35,104 +38,47 @@ public class BackOfficeController {
 
     @FXML
     void initialize() {
-        /*
-        categories = features.viewAllCategory();
+        
+        /*categories = features.viewAllCategory();
         products = features.viewAllProducts();
+        dates = features.viewAllDate();*/
         categories.add(new Category(0, "uno", new ArrayList<>()));
         categories.add(new Category(1, "due", new ArrayList<>()));
-        dates = features.viewAllDate();
-        dates.forEach(d->comboBoxChooseDate.getItems().add(d));      
-        categories.forEach(c-> {
-            comboBoxCategoryAddProduct.getItems().add(c.getName());
-            comboBoxCategoryRemovingProduct.getItems().add(c.getName());
-        });*/
-
-
+        Date d = new Date();
+        dates.add(d);
+        comboBoxChooseDate.getItems().addAll(dates);
+        comboBoxCategoryAddProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
+        comboBoxCategoryRemovingProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
     }
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button addCategoryButton;
-
-    @FXML
-    private Button addEmployeeButton;
-
-    @FXML
-    private Text errorMessage;
-
-    @FXML
-    private Button addProductButton;
-
-    @FXML
-    private Button goToFOButton;
-
-    @FXML
-    private Button removeProductButton;
-
-    @FXML
-    private TextField categoryName;
-
-    @FXML
-    private ComboBox<String> comboBoxCategoryAddProduct;
-
-    @FXML
-    private ComboBox<String> comboBoxCategoryRemovingProduct;
-
-    @FXML
-    private ComboBox<String> comboBoxProductToRemove;
-
-    @FXML
-    private TextField employeeName;
-
-    @FXML
-    private TextField employeePassword;
-
-    @FXML
-    private TextField employeeLastname;
-
-    @FXML
-    private TextField employeeUser;
-
-    @FXML
-    private TextField productName;
-
-    @FXML
-    private TextField productPrice;
-
-    @FXML
-    private Button viewBestEmployeeButton;
-
-    @FXML
-    private Button viewBestSellingProductsButton;
-
-    @FXML
-    private TableView<?> viewBestSellingProductsTableView;
-
-    @FXML
-    private Button viewAvarageExpenseButton;
-
-    @FXML
-    private ComboBox<Date> comboBoxChooseDate;
-
-    @FXML
-    private Label viewTotalCoveredLabel;
-
-    @FXML
-    private Label viewAvarageExpenseLabel;
-
-    @FXML
-    private Button viewAvaragePersPerTableButton;
-
-    @FXML
-    private Label viewAvaragePersPerTableLabel;
-    
-    @FXML
-    private Button manageWorkshiftButton;
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button addCategoryButton;
+    @FXML private Button addEmployeeButton;
+    @FXML private Text errorMessage;
+    @FXML private Button addProductButton;
+    @FXML private Button goToFOButton;
+    @FXML private Button removeProductButton;
+    @FXML private TextField categoryName;
+    @FXML private ComboBox<String> comboBoxCategoryAddProduct;
+    @FXML private ComboBox<String> comboBoxCategoryRemovingProduct;
+    @FXML private ComboBox<String> comboBoxProductToRemove;
+    @FXML private TextField employeeName;
+    @FXML private TextField employeePassword;
+    @FXML private TextField employeeLastname;
+    @FXML private TextField employeeUser;
+    @FXML private TextField productName;
+    @FXML private TextField productPrice;
+    @FXML private Button viewBestEmployeeButton;
+    @FXML private Button viewBestSellingProductsButton;
+    @FXML private TableView<?> viewBestSellingProductsTableView;
+    @FXML private Button viewAvarageExpenseButton;
+    @FXML private ComboBox<Date> comboBoxChooseDate;
+    @FXML private Label viewTotalCoveredLabel;
+    @FXML private Label viewAvarageExpenseLabel;
+    @FXML private Button viewAvaragePersPerTableButton;
+    @FXML private Label viewAvaragePersPerTableLabel;    
+    @FXML private Button manageWorkshiftButton;
 
     @FXML
     void addEmployee(ActionEvent event) {

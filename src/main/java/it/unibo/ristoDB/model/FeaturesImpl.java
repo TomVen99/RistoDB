@@ -34,7 +34,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Category> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Category(result.getInt("ID"), result.getString("Name"), new ArrayList<Product>()));
+                list.add(new Category(result.getInt("ID"), result.getString("name"), new ArrayList<Product>()));
             }
             return list;
         } catch (final SQLException e) {
@@ -49,7 +49,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Table> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Table(result.getInt("Number"), result.getBoolean("Busy"), result.getInt("Max_People")));
+                list.add(new Table(result.getInt("number"), result.getBoolean("busy"), result.getInt("max_people")));
             }
             return list;
         } catch (final SQLException e) {
@@ -64,7 +64,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("ID"), result.getString("Name"), result.getFloat("Price"), result.getInt("Category_ID")));
+                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getInt("category_ID")));
             }
             return list;
         } catch (final SQLException e) {
@@ -75,13 +75,13 @@ public class FeaturesImpl implements Features{
     @Override
     public ObservableList<Product> viewProductsByCategory(final int categoryId) {
         final String query = "SELECT * from Products" +
-                            "WHERE Products.Category_ID = ?";
+                            "WHERE Products.category_ID = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, categoryId);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("ID"), result.getString("Name"), result.getFloat("Price"), result.getInt("Category_ID")));
+                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getInt("category_ID")));
             }
             return list;
         } catch (final SQLException e) {
@@ -92,15 +92,15 @@ public class FeaturesImpl implements Features{
     @Override
     public ObservableList<OrderDetail> viewOrderDetail(final int tableNumber) {
         final String query = "SELECT * from Orders_Details " +
-                         "JOIN Orders ON Orders_Details.Order_ID = Orders.ID " +
-                         "JOIN Tables ON Tables.Table_Number = Orders.Table_Number " +
-                         "WHERE Tables.Table_Number = ?";
+                         "JOIN Orders ON Orders_Details.order_ID = Orders.ID " +
+                         "JOIN Tables ON Tables.table_number = Orders.table_number " +
+                         "WHERE Tables.table_number = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, tableNumber);
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<OrderDetail> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new OrderDetail(result.getInt("Order_ID"), new HashMap<>()));
+                list.add(new OrderDetail(result.getInt("order_ID"), new HashMap<>()));
             }
             return list;
         } catch (final SQLException e) {
@@ -152,11 +152,11 @@ public class FeaturesImpl implements Features{
     @Override
     public boolean addEmployee(final String firstName, final String lastName, final String username, final String password) {
         if(userDontExist(username)){
-            final String queryEmployee = "INSERT INTO Employee "
-                    + "(Name, LastName) "
+            final String queryEmployee = "INSERT INTO Employees "
+                    + "(name, lastname) "
                     + " VALUES (?,?)";
             final String queryUser = "INSERT INTO Users "
-                    + "(Username, Password) "
+                    + "(username, password) "
                     + " VALUES (?,?)";
             try {
                 PreparedStatement statement = this.connection.prepareStatement(queryEmployee);
@@ -199,7 +199,7 @@ public class FeaturesImpl implements Features{
     @Override
     public void addCategory(String categoryName) {
         final String query = "INSERT INTO Categories "
-                + "(Description) "
+                + "(name) "
                 + " VALUES (?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, categoryName);
@@ -214,8 +214,8 @@ public class FeaturesImpl implements Features{
     @Override
     public void addProduct(String name, float price, int categoryId) {
         final String query = "INSERT INTO Products "
-                + "(Name, Price, Category_ID) "
-                + " VALUES (?)";
+                + "(name, price, category_ID) "
+                + " VALUES (?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, name);
             statement.setFloat(2, price);
