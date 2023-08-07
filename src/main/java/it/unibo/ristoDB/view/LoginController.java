@@ -24,26 +24,13 @@ public class LoginController {
         this.view = view;        
     }
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button bologinbutton;
-
-    @FXML
-    private Text errorMessage;
-
-    @FXML
-    private Button fologinbutton;
-
-    @FXML
-    private PasswordField password;
-
-    @FXML
-    private TextField username;
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button bologinbutton;
+    @FXML private Text errorMessage;
+    @FXML private Button fologinbutton;
+    @FXML private PasswordField password;
+    @FXML private TextField username;
 
     @FXML
     void backOfficeLogin(ActionEvent event) {

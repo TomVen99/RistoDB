@@ -24,7 +24,7 @@ public class FrontOfficeController {
         this.features = features;
     }
 
-        @FXML
+    @FXML
     void initialize() {
         orderButton.setDisable(true);
         receiptButton.setDisable(true);
@@ -33,26 +33,13 @@ public class FrontOfficeController {
         tables.forEach(t->comboBoxSelectTable.getItems().add(t.getNumber()));
     }
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button orderButton;
-
-    @FXML
-    private ComboBox<Integer> comboBoxSelectTable;
-
-    @FXML
-    private Button receiptButton;
-
-    @FXML
-    private Label total;
-
-    @FXML
-    private Button goToBOButton;
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button orderButton;
+    @FXML private ComboBox<Integer> comboBoxSelectTable;
+    @FXML private Button receiptButton;
+    @FXML private Label total;
+    @FXML private Button goToBOButton;
 
     
     @FXML

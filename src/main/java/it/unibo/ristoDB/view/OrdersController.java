@@ -44,24 +44,13 @@ public class OrdersController {
         modifyOrderButton.setDisable(true);
     }
 
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private ComboBox<String> comboBoxCategories;
-
-    @FXML
-    private ComboBox<String> comboBoxProducts;
-
-    @FXML
-    private Button modifyOrderButton;
-
-    @FXML
-    private TextField newQuantity;
-
-    @FXML
-    private TableView<?> productsAlreadyOrdered;
-
+    @FXML private Button backButton;
+    @FXML private ComboBox<String> comboBoxCategories;
+    @FXML private ComboBox<String> comboBoxProducts;
+    @FXML private Button modifyOrderButton;
+    @FXML private TextField newQuantity;
+    @FXML private TableView<?> productsAlreadyOrdered;
+    
     @FXML
     void enableComboBoxProducts(ActionEvent event) {
         comboBoxProducts.setDisable(false);
