@@ -130,6 +130,9 @@ public class BackOfficeController {
 
     @FXML
     private Label viewAvaragePersPerTableLabel;
+    
+    @FXML
+    private Button manageWorkshiftButton;
 
     @FXML
     void addEmployee(ActionEvent event) {
@@ -204,6 +207,11 @@ public class BackOfficeController {
     @FXML
     void goToFrontOffice(ActionEvent event) {
         view.setFrontOfficeScene();
+    }
+
+    @FXML
+    void openManageWorkshiftScene(ActionEvent event) {
+        view.setManageWorkshiftScene();
     }
 
 }

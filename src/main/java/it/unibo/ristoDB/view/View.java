@@ -16,6 +16,9 @@ public interface View {
     /** Set order scene on stage and connect it to its controller. */
     void setOrderScene(int selectedTable);
 
+    /** Set manageWorkshift scene on stage and connect it to its controller. */
+    void setManageWorkshiftScene();
+
     /**
      * Add a connection to a DB.
      * @param connection The connection to the database

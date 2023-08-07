@@ -91,5 +91,18 @@ public class ViewImpl implements View{
         }
     }
 
+    public void setManageWorkshiftScene() {
+        try {
+            final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/manageWorkshift.fxml"));
+            WorkshiftController workshiftController = new WorkshiftController(this, features);
+            loader.setController(workshiftController);
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     
 }
