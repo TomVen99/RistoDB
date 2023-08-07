@@ -8,50 +8,52 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="employeeName" layoutX="36.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="nome">
+      <TextField fx:id="employeeName" layoutX="19.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="nome">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="employeeLastname" layoutX="211.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="cognome">
+      <TextField fx:id="employeeLastname" layoutX="194.0" layoutY="34.0" prefHeight="25.0" prefWidth="150.0" promptText="cognome">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="employeeUser" layoutX="36.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="utente">
+      <TextField fx:id="employeeUser" layoutX="19.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="utente">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="employeePassword" layoutX="211.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="password">
+      <TextField fx:id="employeePassword" layoutX="194.0" layoutY="69.0" prefHeight="25.0" prefWidth="150.0" promptText="password">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <Button fx:id="addEmployeeButton" layoutX="296.0" layoutY="107.0" mnemonicParsing="false" onAction="#addEmployee" text="Aggiungi" />
+      <Button fx:id="addEmployeeButton" layoutX="279.0" layoutY="107.0" mnemonicParsing="false" onAction="#addEmployee" text="Aggiungi" />
       <Separator layoutY="19.0" prefHeight="8.0" prefWidth="724.0" />
-      <TextField fx:id="categoryName" layoutX="36.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="nome categoria">
+      <TextField fx:id="categoryName" layoutX="19.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="nome categoria">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <Button fx:id="addCategoryButton" layoutX="296.0" layoutY="185.0" mnemonicParsing="false" onAction="#addCategory" text="Aggiungi" />
+      <Button fx:id="addCategoryButton" layoutX="279.0" layoutY="185.0" mnemonicParsing="false" onAction="#addCategory" text="Aggiungi" />
       <Separator layoutY="140.0" prefHeight="8.0" prefWidth="375.0" />
-      <TextField fx:id="productName" layoutX="36.0" layoutY="265.0" prefHeight="25.0" prefWidth="150.0" promptText="nome prodotto">
+      <TextField fx:id="productName" layoutX="19.0" layoutY="265.0" prefHeight="25.0" prefWidth="150.0" promptText="nome prodotto">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="productPrice" layoutX="211.0" layoutY="266.0" prefHeight="25.0" prefWidth="150.0" promptText="prezzo">
+      <TextField fx:id="productPrice" layoutX="194.0" layoutY="266.0" prefHeight="25.0" prefWidth="150.0" promptText="prezzo">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </TextField>
-      <ComboBox fx:id="comboBoxCategoryAddProduct" layoutX="36.0" layoutY="305.0" prefWidth="150.0" promptText="Categoria" />
-      <Button fx:id="addProductButton" layoutX="296.0" layoutY="305.0" mnemonicParsing="false" onAction="#addProduct" text="Aggiungi" />
+      <ComboBox fx:id="comboBoxCategoryAddProduct" layoutX="19.0" layoutY="305.0" prefWidth="150.0" promptText="Categoria" />
+      <Button fx:id="addProductButton" layoutX="279.0" layoutY="305.0" mnemonicParsing="false" onAction="#addProduct" text="Aggiungi" />
       <Separator layoutY="163.0" prefHeight="8.0" prefWidth="375.0" />
       <Label layoutX="1.0" layoutY="147.0" prefHeight="19.0" prefWidth="130.0" text="Inserisci categoria">
          <padding>
@@ -70,17 +72,17 @@
       </Label>
       <Separator layoutY="220.0" prefHeight="8.0" prefWidth="375.0" />
       <Separator layoutY="243.0" prefHeight="8.0" prefWidth="375.0" />
-      <Label layoutX="4.0" layoutY="345.0" prefHeight="19.0" prefWidth="130.0" text="Rimuovi prodotto">
+      <Label layoutX="4.0" layoutY="343.0" prefHeight="19.0" prefWidth="130.0" text="Rimuovi prodotto">
          <padding>
             <Insets left="4.0" top="2.0" />
          </padding>
       </Label>
       <Separator layoutY="338.0" prefHeight="8.0" prefWidth="375.0" />
       <Separator layoutY="361.0" prefHeight="8.0" prefWidth="375.0" />
-      <ComboBox fx:id="comboBoxCategoryRemovingProduct" layoutX="36.0" layoutY="385.0" onAction="#updateProductComboBox" prefWidth="150.0" promptText="Categoria" />
-      <ComboBox fx:id="comboBoxProductToRemove" layoutX="208.0" layoutY="385.0" prefWidth="150.0" promptText="Prodotto" />
-      <Button fx:id="removeProductButton" layoutX="296.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeProduct" text="Rimuovi" />
-      <Separator layoutX="373.0" layoutY="1.0" orientation="VERTICAL" prefHeight="468.0" prefWidth="8.0" />
+      <ComboBox fx:id="comboBoxCategoryRemovingProduct" layoutX="19.0" layoutY="385.0" onAction="#updateProductComboBox" prefWidth="150.0" promptText="Categoria" />
+      <ComboBox fx:id="comboBoxProductToRemove" layoutX="191.0" layoutY="385.0" prefWidth="150.0" promptText="Prodotto" />
+      <Button fx:id="removeProductButton" layoutX="279.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeProduct" text="Rimuovi" />
+      <Separator layoutX="373.0" orientation="VERTICAL" prefHeight="498.0" prefWidth="5.0" />
       <Button fx:id="viewBestEmployeeButton" layoutX="394.0" layoutY="34.0" mnemonicParsing="false" onAction="#viewBestEmployee" text="Visualizza cameriere che ha permesso più incasso oggi" />
       <Label layoutX="381.0" layoutY="4.0" prefHeight="19.0" prefWidth="130.0" text="Statistiche">
          <padding>
@@ -91,9 +93,25 @@
       <Button fx:id="viewBestSellingProductsButton" layoutX="394.0" layoutY="120.0" mnemonicParsing="false" onAction="#viewBestSellingProducts" prefHeight="25.0" prefWidth="305.0" text="Visualizza i 5 prodotti più venduti" />
       <TableView fx:id="viewBestSellingProductsTableView" focusTraversable="false" layoutX="450.0" layoutY="157.0" prefHeight="157.0" prefWidth="200.0" />
       <Separator layoutX="375.0" layoutY="338.0" prefHeight="8.0" prefWidth="349.0" />
-      <Button fx:id="viewMostBusyMomentButton" layoutX="393.0" layoutY="353.0" mnemonicParsing="false" onAction="#viewMostBusyMoment" prefHeight="25.0" prefWidth="305.0" text="Visualizza momento con maggiore affluenza" />
-      <Label fx:id="viewMostBusyMomentLabel" layoutX="394.0" layoutY="390.0" prefHeight="25.0" prefWidth="305.0" text="Momento con maggiore affluenza alle ore 18" />
+      <Button fx:id="viewAvarageExpenseButton" layoutX="390.0" layoutY="385.0" mnemonicParsing="false" onAction="#viewAvarageExpense" prefHeight="25.0" prefWidth="137.0" text="Visualizza spesa media" />
+      <Label layoutX="394.0" layoutY="419.0" prefHeight="25.0" prefWidth="65.0" text="Tot coperti:" />
       <Label layoutX="402.0" layoutY="73.0" prefHeight="25.0" prefWidth="287.0" text="Nome e Incasso" />
-      <Button fx:id="goToFOButton" layoutX="590.0" layoutY="423.0" mnemonicParsing="false" onAction="#goToFrontOffice" text="Vai al FrontOffice" />
+      <Button fx:id="goToFOButton" layoutX="23.0" layoutY="465.0" mnemonicParsing="false" onAction="#goToFrontOffice" text="Vai al FrontOffice" />
+      <Text fx:id="errorMessage" fill="RED" layoutX="127.0" layoutY="109.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password o nome utente errati" wrappingWidth="161.21630859375">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
+      <Label layoutX="385.0" layoutY="352.0" prefHeight="19.0" prefWidth="130.0" text="Seleziona data:">
+         <padding>
+            <Insets left="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <ComboBox fx:id="comboBoxChooseDate" layoutX="546.0" layoutY="349.0" prefWidth="150.0" />
+      <Label fx:id="viewTotalCoveredLabel" layoutX="462.0" layoutY="419.0" prefHeight="25.0" prefWidth="65.0" text="10" />
+      <Label layoutX="559.0" layoutY="417.0" prefHeight="25.0" prefWidth="73.0" text="Spesa media:" />
+      <Label fx:id="viewAvarageExpenseLabel" layoutX="635.0" layoutY="417.0" prefHeight="25.0" prefWidth="65.0" text="30,5" />
+      <Button fx:id="viewAvaragePersPerTableButton" layoutX="390.0" layoutY="456.0" mnemonicParsing="false" onAction="#viewAvaragePersPerTable" prefHeight="25.0" prefWidth="137.0" text="Media persone/tavolo" />
+      <Label fx:id="viewAvaragePersPerTableLabel" layoutX="559.0" layoutY="456.0" prefHeight="25.0" prefWidth="65.0" text="10" />
    </children>
 </AnchorPane>

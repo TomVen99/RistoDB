@@ -148,24 +148,52 @@ public class FeaturesImpl implements Features{
         }
     }
 
-    /*****Devo verificapre se l'user va bene e non è duplicato */
+    /*****Devo verificare se l'user va bene e non è duplicato */
     @Override
-    public void addEmployee(final String firstName, final String lastName, final String username, final String password) {
-        final String query = "INSERT INTO Employee "
-                + "(Name, LastName) "
-                + " VALUES (?,?)";
-        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setString(1, firstName);
-            statement.setString(2, lastName);
-            /*statement.setString(3, username);
-            statement.setString(4, password);*/
-            statement.executeUpdate();
-        } catch (final SQLIntegrityConstraintViolationException e) {
-            throw new IllegalArgumentException(e);
-        } catch (final SQLException e) {
-            throw new IllegalStateException(e);
+    public boolean addEmployee(final String firstName, final String lastName, final String username, final String password) {
+        if(userDontExist(username)){
+            final String queryEmployee = "INSERT INTO Employee "
+                    + "(Name, LastName) "
+                    + " VALUES (?,?)";
+            final String queryUser = "INSERT INTO Users "
+                    + "(Username, Password) "
+                    + " VALUES (?,?)";
+            try {
+                PreparedStatement statement = this.connection.prepareStatement(queryEmployee);
+                PreparedStatement statement2 = this.connection.prepareStatement(queryUser);
+                statement.setString(1, firstName);
+                statement.setString(2, lastName);
+                statement2.setString(1, username);
+                statement2.setString(2, password);
+                statement.executeUpdate();
+                statement2.executeUpdate();
+                return true;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+        }else {
+            return false;
         }
 
+    }
+    /**
+     * @param username user to find
+     * @return true if username don't exist
+     */
+    private boolean userDontExist(String username) {
+        final String query = "SELECT * from USERS "
+                    + "WHERE users.username = ? ";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setString(1, username);
+                final ResultSet result = statement.executeQuery(query);
+                return !result.next();
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override
@@ -227,7 +255,7 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public Date viewBusyMoment() {
+    public Date viewBusyDay() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'viewBusyMoment'");
     }
@@ -248,6 +276,24 @@ public class FeaturesImpl implements Features{
     public void addOrder(Date date, Time time, int tableNumber, int employeeId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
+    }
+
+    @Override
+    public Float viewAvarageExpense(Date date) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'viewAvarageExpense'");
+    }
+
+    @Override
+    public Integer viewTotalCovered(Date date) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'viewTotalCovered'");
+    }
+
+    @Override
+    public ObservableList<Date> viewAllDate() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'viewAllDate'");
     }
     
 }

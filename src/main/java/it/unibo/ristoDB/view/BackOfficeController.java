@@ -2,6 +2,7 @@ package it.unibo.ristoDB.view;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import it.unibo.ristoDB.db.Category;
@@ -16,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class BackOfficeController {
 
@@ -24,6 +26,7 @@ public class BackOfficeController {
     ObservableList<Category> categories = FXCollections.observableArrayList();
     ObservableList<Product> products;
     ObservableList<Product> productsByCategory;
+    ObservableList<Date> dates;
 
     public BackOfficeController(ViewImpl view, Features features) {
         this.view = view;
@@ -32,14 +35,18 @@ public class BackOfficeController {
 
     @FXML
     void initialize() {
-        /*categories = features.viewAllCategory();
+        /*
+        categories = features.viewAllCategory();
         products = features.viewAllProducts();
-        /*categories.add(new Category(0, "uno", new ArrayList<>()));
-        categories.add(new Category(1, "due", new ArrayList<>()));*/
+        categories.add(new Category(0, "uno", new ArrayList<>()));
+        categories.add(new Category(1, "due", new ArrayList<>()));
+        dates = features.viewAllDate();
+        dates.forEach(d->comboBoxChooseDate.getItems().add(d));      
         categories.forEach(c-> {
             comboBoxCategoryAddProduct.getItems().add(c.getName());
             comboBoxCategoryRemovingProduct.getItems().add(c.getName());
-        });
+        });*/
+
 
     }
 
@@ -54,6 +61,9 @@ public class BackOfficeController {
 
     @FXML
     private Button addEmployeeButton;
+
+    @FXML
+    private Text errorMessage;
 
     @FXML
     private Button addProductButton;
@@ -104,18 +114,32 @@ public class BackOfficeController {
     private TableView<?> viewBestSellingProductsTableView;
 
     @FXML
-    private Button viewMostBusyMomentButton;
+    private Button viewAvarageExpenseButton;
 
     @FXML
-    private Label viewMostBusyMomentLabel;
+    private ComboBox<Date> comboBoxChooseDate;
+
+    @FXML
+    private Label viewTotalCoveredLabel;
+
+    @FXML
+    private Label viewAvarageExpenseLabel;
+
+    @FXML
+    private Button viewAvaragePersPerTableButton;
+
+    @FXML
+    private Label viewAvaragePersPerTableLabel;
 
     @FXML
     void addEmployee(ActionEvent event) {
-        features.addEmployee(
+        if(!features.addEmployee(
             employeeName.getText(),
             employeeLastname.getText(),
             employeeUser.getText(),
-            employeePassword.getText());
+            employeePassword.getText())) {
+                errorMessage.setOpacity(100);
+            }
         
         employeeName.clear();
         employeeLastname.clear();
@@ -168,7 +192,12 @@ public class BackOfficeController {
     }
 
     @FXML
-    void viewMostBusyMoment(ActionEvent event) {
+    void viewAvarageExpense(ActionEvent event) {
+
+    }   
+
+    @FXML
+    void viewAvaragePersPerTable(ActionEvent event) {
 
     }
 

@@ -47,7 +47,7 @@ public interface Features {
     /**
      * Add an Employee
      */
-    void addEmployee(String name, String surname, String username, String password);
+    boolean addEmployee(String name, String surname, String username, String password);
 
     /**
      * Add Category
@@ -93,7 +93,28 @@ public interface Features {
 
     /**
      * 
-     * @return when resturant is busiest
+     * @return day when resturant is busiest
      */
-    Date viewBusyMoment();
+    Date viewBusyDay();
+
+    /**
+     * 
+     * @param date to find
+     * @return avarage expense of that day
+     */
+    Float viewAvarageExpense(Date date);
+    
+    /**
+     * @param date to find
+     * @return total of covered of the day
+     */
+    Integer viewTotalCovered(Date date);
+
+    /***
+     * displays all days where there is at least one order
+     * @return a list of dates
+     */
+    ObservableList<Date> viewAllDate();
+
+    
 }
