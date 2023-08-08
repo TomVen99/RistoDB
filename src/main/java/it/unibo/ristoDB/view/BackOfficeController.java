@@ -1,11 +1,9 @@
 package it.unibo.ristoDB.view;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import it.unibo.ristoDB.db.Category;
@@ -38,15 +36,16 @@ public class BackOfficeController {
 
     @FXML
     void initialize() {
-        
-        /*categories = features.viewAllCategory();
+        comboBoxCategoryAddProduct.getItems().clear();
+        categories = features.viewAllCategory();
+        comboBoxCategoryRemovingProduct.getItems().clear();
         products = features.viewAllProducts();
-        dates = features.viewAllDate();*/
-        categories.add(new Category(0, "uno", new ArrayList<>()));
+        //dates = features.viewAllDate();
+        /*categories.add(new Category(0, "uno", new ArrayList<>()));
         categories.add(new Category(1, "due", new ArrayList<>()));
         Date d = new Date();
         dates.add(d);
-        comboBoxChooseDate.getItems().addAll(dates);
+        comboBoxChooseDate.getItems().addAll(dates);*/
         comboBoxCategoryAddProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
         comboBoxCategoryRemovingProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
     }
@@ -79,6 +78,7 @@ public class BackOfficeController {
     @FXML private Button viewAvaragePersPerTableButton;
     @FXML private Label viewAvaragePersPerTableLabel;    
     @FXML private Button manageWorkshiftButton;
+    @FXML private Button viewTotalCoveredButton;
 
     @FXML
     void addEmployee(ActionEvent event) {
@@ -99,15 +99,16 @@ public class BackOfficeController {
     @FXML
     void addCategory(ActionEvent event) {
         System.out.println(categoryName.getText());
-        categoryName.clear();
         features.addCategory(categoryName.getText());
+        this.initialize();
+        categoryName.clear();
     }
 
     @FXML
     void addProduct(ActionEvent event) {
-        /*features.addProduct(productName.getText(),
+        features.addProduct(productName.getText(),
                              Float.parseFloat(productPrice.getText()),
-                             categories.get(comboBoxCategoryAddProduct.getSelectionModel().getSelectedIndex()).getId());*/
+                             categories.get(comboBoxCategoryAddProduct.getSelectionModel().getSelectedIndex()).getName());
         productName.clear();
         productPrice.clear();
         comboBoxCategoryAddProduct.getSelectionModel().clearSelection();
@@ -116,8 +117,8 @@ public class BackOfficeController {
 
     @FXML
     void updateProductComboBox(ActionEvent event) {
-            /*productsByCategory = features.viewProductsByCategory(
-                categories.get(comboBoxCategoryRemovingProduct.getSelectionModel().getSelectedIndex()).getId());*/
+            productsByCategory = features.viewProductsByCategory(
+                comboBoxCategoryRemovingProduct.getSelectionModel().getSelectedItem());
         productsByCategory.forEach(p->comboBoxProductToRemove.getItems().add(p.getName()));
     }
 
@@ -158,6 +159,11 @@ public class BackOfficeController {
     @FXML
     void openManageWorkshiftScene(ActionEvent event) {
         view.setManageWorkshiftScene();
+    }
+
+    @FXML
+    void viewTotalCovered(ActionEvent event) {
+
     }
 
 }

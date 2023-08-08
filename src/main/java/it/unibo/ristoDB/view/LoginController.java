@@ -16,14 +16,6 @@ import javafx.scene.text.Text;
 /** The LoginController class is responsible for handling the title login scene and related actions. */
 public class LoginController {
 
-    /** The database name used to login. */
-    private static final String DB_NAME = "ristodb";
-    private final ViewImpl view;
-
-    public LoginController(ViewImpl view) {
-        this.view = view;        
-    }
-
     @FXML private ResourceBundle resources;
     @FXML private URL location;
     @FXML private Button bologinbutton;
@@ -32,24 +24,51 @@ public class LoginController {
     @FXML private PasswordField password;
     @FXML private TextField username;
 
-    @FXML
-    void backOfficeLogin(ActionEvent event) {
-        view.setBackOfficeScene();/*
+    /** The database name used to login. */
+    private static final String DB_NAME = "RistoDB";
+    private Features features;
+    private final ViewImpl view;
+
+    public LoginController(ViewImpl view) {
+        this.view = view;
         try {
-            final ConnectionProvider prov = new ConnectionProvider(username.getText(), password.getText(), DB_NAME);
+            final ConnectionProvider prov = new ConnectionProvider("admin", "admin", DB_NAME);
             final Connection connection = prov.getMySQLConnection();
             view.addConnection(connection);
-            view.setBackOfficeScene();
+            System.out.println("connessione avvenuta");
         } catch (IllegalStateException exception) {
+            errorMessage.setText("Errore in connessione al db");
             errorMessage.setOpacity(100);
-        }*/
+        }
+        this.features = view.getFeatures();   
+    }
+
+    public void setFeatures(Features features) {
+        this.features = features;
+    }
+
+    @FXML
+    void backOfficeLogin(ActionEvent event) {
+        System.out.println("*************************" + features);
+        if(features.findUser(username.getText(), password.getText())) {
+            view.setBackOfficeScene();
+        }else {
+            errorMessage.setText("password o nome utente errati");
+            errorMessage.setOpacity(100);
+        }
     }
 
     @FXML
     void frontOfficeLogin(ActionEvent event) {
+        if(features.findUser(username.getText(), password.getText())) {
+            view.setFrontOfficeScene();
+        }else {
+            errorMessage.setText("password o nome utente errati");
+            errorMessage.setOpacity(100);
+        }
         
-        view.setFrontOfficeScene();/*
-        try {
+        
+        /*try {
             final ConnectionProvider prov = new ConnectionProvider(username.getText(), password.getText(), DB_NAME);
             final Connection connection = prov.getMySQLConnection();
             view.addConnection(connection);

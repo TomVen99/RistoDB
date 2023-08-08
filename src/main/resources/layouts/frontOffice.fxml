@@ -47,17 +47,21 @@
       <Separator layoutY="91.0" prefHeight="8.0" prefWidth="494.0" />
       <Label layoutX="4.0" layoutY="166.0" prefHeight="19.0" prefWidth="60.0" text="Scontrino" />
       <Separator layoutX="1.0" layoutY="181.0" prefHeight="8.0" prefWidth="494.0" />
-      <TableView focusTraversable="false" layoutX="290.0" layoutY="189.0" prefHeight="239.0" prefWidth="150.0" />
-      <Label layoutX="26.0" layoutY="266.0" prefHeight="43.0" prefWidth="80.0" text="Totale:">
+      <TableView fx:id="orderListTableView" focusTraversable="false" layoutX="19.0" layoutY="239.0" prefHeight="154.0" prefWidth="193.0" />
+      <Label layoutX="19.0" layoutY="196.0" prefHeight="43.0" prefWidth="80.0" text="Totale:">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="total" layoutX="109.0" layoutY="266.0" prefHeight="43.0" prefWidth="80.0">
+      <Label fx:id="totalLabel" layoutX="102.0" layoutY="196.0" prefHeight="43.0" prefWidth="80.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="goToBOButton" layoutX="34.0" layoutY="403.0" mnemonicParsing="false" onAction="#goToBackOffice" prefHeight="25.0" prefWidth="130.0" text="Vai al BackOffice" />
+      <Button fx:id="goToBOButton" layoutX="21.0" layoutY="404.0" mnemonicParsing="false" onAction="#goToBackOffice" prefHeight="25.0" prefWidth="130.0" text="Vai al BackOffice" />
+      <Separator layoutX="222.0" layoutY="161.0" orientation="VERTICAL" prefHeight="289.0" prefWidth="4.0" />
+      <Label layoutX="228.0" layoutY="166.0" prefHeight="19.0" prefWidth="71.0" text="Tavoli aperti" />
+      <TableView fx:id="openedTableTableView" focusTraversable="false" layoutX="238.0" layoutY="239.0" prefHeight="154.0" prefWidth="239.0" />
+      <Button fx:id="openedTablesButton" layoutX="238.0" layoutY="197.0" mnemonicParsing="false" onAction="#viewOpenedTables" text="Vedi tavoli aperti" />
    </children>
 </AnchorPane>

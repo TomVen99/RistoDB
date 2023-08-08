@@ -2,6 +2,8 @@ package it.unibo.ristoDB.view;
 
 import java.sql.Connection;
 
+import it.unibo.ristoDB.model.Features;
+
 public interface View {
 
     /** Set the Login scene. */
@@ -25,5 +27,6 @@ public interface View {
      */
     void addConnection(Connection connection);
 
+    Features getFeatures();
 
 }

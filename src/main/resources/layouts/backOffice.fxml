@@ -69,30 +69,31 @@
          </padding>
       </Label>
       <Separator layoutX="375.0" layoutY="101.0" prefHeight="8.0" prefWidth="349.0" />
-      <Button fx:id="viewBestSellingProductsButton" layoutX="394.0" layoutY="120.0" mnemonicParsing="false" onAction="#viewBestSellingProducts" prefHeight="25.0" prefWidth="305.0" text="Visualizza i 5 prodotti più venduti" />
-      <TableView fx:id="viewBestSellingProductsTableView" focusTraversable="false" layoutX="450.0" layoutY="157.0" prefHeight="157.0" prefWidth="200.0" />
-      <Separator layoutX="375.0" layoutY="338.0" prefHeight="8.0" prefWidth="349.0" />
-      <Button fx:id="viewAvarageExpenseButton" layoutX="390.0" layoutY="385.0" mnemonicParsing="false" onAction="#viewAvarageExpense" prefHeight="25.0" prefWidth="137.0" text="Visualizza spesa media" />
-      <Label layoutX="394.0" layoutY="419.0" prefHeight="25.0" prefWidth="65.0" text="Tot coperti:" />
+      <Button fx:id="viewBestSellingProductsButton" layoutX="602.0" layoutY="256.0" mnemonicParsing="false" onAction="#viewBestSellingProducts" prefHeight="25.0" prefWidth="114.0" text="prodotti + venduti" />
+      <TableView fx:id="viewBestSellingProductsTableView" focusTraversable="false" layoutX="394.0" layoutY="256.0" prefHeight="157.0" prefWidth="200.0" />
+      <Button fx:id="viewAvarageExpenseButton" layoutX="395.0" layoutY="149.0" mnemonicParsing="false" onAction="#viewAvarageExpense" prefHeight="25.0" prefWidth="137.0" text="Visualizza spesa media" />
+      <Label layoutX="563.0" layoutY="182.0" prefHeight="25.0" prefWidth="65.0" text="Tot coperti:" />
       <Label layoutX="402.0" layoutY="73.0" prefHeight="25.0" prefWidth="287.0" text="Nome e Incasso" />
-      <Button fx:id="goToFOButton" layoutX="23.0" layoutY="459.0" mnemonicParsing="false" onAction="#goToFrontOffice" text="Vai al FrontOffice" />
+      <Button fx:id="goToFOButton" layoutX="602.0" layoutY="456.0" mnemonicParsing="false" onAction="#goToFrontOffice" prefHeight="25.0" prefWidth="114.0" text="Vai al FrontOffice" />
       <Text fx:id="errorMessage" fill="RED" layoutX="127.0" layoutY="109.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password o nome utente errati" wrappingWidth="161.21630859375">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
-      <Label layoutX="385.0" layoutY="352.0" prefHeight="19.0" prefWidth="130.0" text="Seleziona data:">
+      <Label layoutX="394.0" layoutY="111.0" prefHeight="19.0" prefWidth="130.0" text="Seleziona data:">
          <padding>
             <Insets left="4.0" top="2.0" />
          </padding>
       </Label>
-      <ComboBox fx:id="comboBoxChooseDate" layoutX="546.0" layoutY="349.0" prefWidth="150.0" />
-      <Label fx:id="viewTotalCoveredLabel" layoutX="462.0" layoutY="419.0" prefHeight="25.0" prefWidth="65.0" text="10" />
-      <Label layoutX="559.0" layoutY="417.0" prefHeight="25.0" prefWidth="73.0" text="Spesa media:" />
-      <Label fx:id="viewAvarageExpenseLabel" layoutX="635.0" layoutY="417.0" prefHeight="25.0" prefWidth="65.0" text="30,5" />
-      <Button fx:id="viewAvaragePersPerTableButton" layoutX="390.0" layoutY="456.0" mnemonicParsing="false" onAction="#viewAvaragePersPerTable" prefHeight="25.0" prefWidth="137.0" text="Media persone/tavolo" />
-      <Label fx:id="viewAvaragePersPerTableLabel" layoutX="559.0" layoutY="456.0" prefHeight="25.0" prefWidth="65.0" text="10" />
-      <Button fx:id="manageWorkshiftButton" layoutX="68.0" layoutY="34.0" mnemonicParsing="false" onAction="#openManageWorkshiftScene" prefHeight="25.0" prefWidth="208.0" text="Gestisci turni" />
+      <ComboBox fx:id="comboBoxChooseDate" layoutX="532.0" layoutY="111.0" prefWidth="150.0" />
+      <Label fx:id="viewTotalCoveredLabel" layoutX="668.0" layoutY="184.0" prefHeight="25.0" prefWidth="65.0" text="10" />
+      <Label layoutX="564.0" layoutY="150.0" prefHeight="25.0" prefWidth="73.0" text="Spesa media:" />
+      <Label fx:id="viewAvarageExpenseLabel" layoutX="668.0" layoutY="151.0" prefHeight="25.0" prefWidth="65.0" text="30,5" />
+      <Button fx:id="viewAvaragePersPerTableButton" layoutX="395.0" layoutY="218.0" mnemonicParsing="false" onAction="#viewAvaragePersPerTable" prefHeight="25.0" prefWidth="137.0" text="Media persone/tavolo" />
+      <Label fx:id="viewAvaragePersPerTableLabel" layoutX="668.0" layoutY="217.0" prefHeight="25.0" prefWidth="65.0" text="10" />
+      <Button fx:id="manageWorkshiftButton" layoutX="68.0" layoutY="34.0" mnemonicParsing="false" onAction="#openManageWorkshiftScene" prefHeight="25.0" prefWidth="208.0" text="Gestisci turni e camerieri" />
       <Separator layoutY="385.0" prefHeight="8.0" prefWidth="375.0" />
+      <Button fx:id="viewTotalCoveredButton" layoutX="395.0" layoutY="183.0" mnemonicParsing="false" onAction="#viewTotalCovered" prefHeight="25.0" prefWidth="137.0" text="Visualizza tot coperti" />
+      <Label layoutX="564.0" layoutY="216.0" prefHeight="25.0" prefWidth="103.0" text="Media pers/tav:" />
    </children>
 </AnchorPane>

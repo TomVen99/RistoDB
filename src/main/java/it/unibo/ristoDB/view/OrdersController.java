@@ -55,7 +55,7 @@ public class OrdersController {
     void enableComboBoxProducts(ActionEvent event) {
         comboBoxProducts.setDisable(false);
         productsByCategory = features.viewProductsByCategory(categories.get(
-            comboBoxCategories.getSelectionModel().getSelectedIndex()).getId());
+            comboBoxCategories.getSelectionModel().getSelectedIndex()).getName());
         productsByCategory.forEach(p->comboBoxProducts.getItems().add(p.getName()));
     }
 

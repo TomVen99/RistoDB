@@ -32,6 +32,9 @@ val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
 dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.7.3")
+    
+    //MySQL
+    implementation ("mysql:mysql-connector-java:8.0.13")
 
     // Example library: Guava. Add what you need (and remove Guava if you don't use it)
     // implementation("com.google.guava:guava:28.1-jre")

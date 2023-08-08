@@ -12,8 +12,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 
 public class FrontOfficeController {
+
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button orderButton;
+    @FXML private ComboBox<Integer> comboBoxSelectTable;
+    @FXML private Button receiptButton;
+    @FXML private Label total;
+    @FXML private Button goToBOButton;
+    @FXML private TableView<?> orderListTableView;
+    @FXML private TableView<?> openedTableTableView;
+    @FXML private Label totalLabel;
+    @FXML private Button openedTablesButton;
 
     private ViewImpl view;
     private final Features features;
@@ -28,18 +41,11 @@ public class FrontOfficeController {
     void initialize() {
         orderButton.setDisable(true);
         receiptButton.setDisable(true);
-        tables.add(new Table(0, false, 0));/*features.viewAllTables();*/
-        tables.add(new Table(1, false, 0));
+        tables = features.viewAllTables();
+        /*tables.add(new Table(0, false, 0));
+        tables.add(new Table(1, false, 0));*/
         tables.forEach(t->comboBoxSelectTable.getItems().add(t.getNumber()));
     }
-
-    @FXML private ResourceBundle resources;
-    @FXML private URL location;
-    @FXML private Button orderButton;
-    @FXML private ComboBox<Integer> comboBoxSelectTable;
-    @FXML private Button receiptButton;
-    @FXML private Label total;
-    @FXML private Button goToBOButton;
 
     
     @FXML
@@ -61,6 +67,11 @@ public class FrontOfficeController {
     @FXML
     void goToBackOffice(ActionEvent event) {
         view.setBackOfficeScene();
+    }
+
+    @FXML
+    void viewOpenedTables(ActionEvent event) {
+
     }
 
 }

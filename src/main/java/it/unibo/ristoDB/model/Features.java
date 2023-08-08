@@ -32,7 +32,7 @@ public interface Features {
      * @param category to filter products
      * @return a list of Products appertain to the category
      */
-    ObservableList<Product> viewProductsByCategory(int categoryId);
+    ObservableList<Product> viewProductsByCategory(String categoryName);
 
     /**
      * @return a list of Products
@@ -57,7 +57,7 @@ public interface Features {
     /**
      * Add product
      */
-    void addProduct(String name, float price, int categoryId);
+    void addProduct(String name, float price, String categoryName);
 
     /**
      * Remove Product
@@ -115,6 +115,8 @@ public interface Features {
      * @return a list of dates
      */
     ObservableList<Date> viewAllDate();
+
+    boolean findUser(String username, String password);
 
     
 }

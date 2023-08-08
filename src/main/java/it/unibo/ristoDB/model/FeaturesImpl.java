@@ -34,7 +34,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Category> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Category(result.getInt("ID"), result.getString("name"), new ArrayList<Product>()));
+                list.add(new Category(result.getString("name")));
             }
             return list;
         } catch (final SQLException e) {
@@ -49,7 +49,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Table> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Table(result.getInt("number"), result.getBoolean("busy"), result.getInt("max_people")));
+                list.add(new Table(result.getInt("number"), result.getInt("max_people")));
             }
             return list;
         } catch (final SQLException e) {
@@ -64,7 +64,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getInt("category_ID")));
+                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getString("Inc_name")));
             }
             return list;
         } catch (final SQLException e) {
@@ -73,18 +73,19 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public ObservableList<Product> viewProductsByCategory(final int categoryId) {
+    public ObservableList<Product> viewProductsByCategory(final String categoryName) {
         final String query = "SELECT * from Products" +
-                            "WHERE Products.category_ID = ?";
+                            " WHERE Inc_name = ? ";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            statement.setInt(1, categoryId);
-            final ResultSet result = statement.executeQuery(query);
+            statement.setString(1, categoryName);
+            final ResultSet result = statement.executeQuery();
             final ObservableList<Product> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getInt("category_ID")));
+                list.add(new Product(result.getInt("ID"), result.getString("name"), result.getFloat("price"), result.getString("Inc_name")));
             }
             return list;
         } catch (final SQLException e) {
+            System.out.println("********************" + e);
             throw new IllegalStateException(e);
         }
     }
@@ -97,7 +98,7 @@ public class FeaturesImpl implements Features{
                          "WHERE Tables.table_number = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, tableNumber);
-            final ResultSet result = statement.executeQuery(query);
+            final ResultSet result = statement.executeQuery();
             final ObservableList<OrderDetail> list = FXCollections.observableArrayList();
             while (result.next()) {
                 list.add(new OrderDetail(result.getInt("order_ID"), new HashMap<>()));
@@ -151,7 +152,7 @@ public class FeaturesImpl implements Features{
     /*****Devo verificare se l'user va bene e non è duplicato */
     @Override
     public boolean addEmployee(final String firstName, final String lastName, final String username, final String password) {
-        if(userDontExist(username)){
+        if(findUser(username, password)){
             final String queryEmployee = "INSERT INTO Employees "
                     + "(name, lastname) "
                     + " VALUES (?,?)";
@@ -182,13 +183,14 @@ public class FeaturesImpl implements Features{
      * @param username user to find
      * @return true if username don't exist
      */
-    private boolean userDontExist(String username) {
+    public boolean findUser(String username, String password) {
         final String query = "SELECT * from USERS "
-                    + "WHERE users.username = ? ";
+                    + "WHERE users.username = ? AND users.password = ?";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
                 statement.setString(1, username);
-                final ResultSet result = statement.executeQuery(query);
-                return !result.next();
+                statement.setString(2, password);
+                final ResultSet result = statement.executeQuery();
+                return result.next();
             } catch (final SQLIntegrityConstraintViolationException e) {
                 throw new IllegalArgumentException(e);
             } catch (final SQLException e) {
@@ -212,14 +214,14 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void addProduct(String name, float price, int categoryId) {
+    public void addProduct(String name, float price, String categoryName) {
         final String query = "INSERT INTO Products "
-                + "(name, price, category_ID) "
+                + "(name, price, Inc_name) "
                 + " VALUES (?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, name);
             statement.setFloat(2, price);
-            statement.setInt(3, categoryId);
+            statement.setString(3, categoryName);
             statement.executeUpdate();
         } catch (final SQLIntegrityConstraintViolationException e) {
             throw new IllegalArgumentException(e);
@@ -230,9 +232,9 @@ public class FeaturesImpl implements Features{
 
     @Override
     public void removeProduct(final int productId) {
-        if (checkDependencies(productId)) {
+        /*if (checkDependencies(productId)) {
             handleDependencies(productId);
-        }
+        }*/
         final String query = "DELETE FROM Products WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, productId);
@@ -294,6 +296,5 @@ public class FeaturesImpl implements Features{
     public ObservableList<Date> viewAllDate() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'viewAllDate'");
-    }
-    
+    }    
 }

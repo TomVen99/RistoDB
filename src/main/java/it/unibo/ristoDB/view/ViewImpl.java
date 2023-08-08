@@ -15,6 +15,7 @@ public class ViewImpl implements View{
 
     private Features features;
     private final Stage stage;
+    private LoginController loginController;
 
     /**
      * Class constructor.
@@ -33,7 +34,8 @@ public class ViewImpl implements View{
     public void setLoginScene() {
         try {
             final var loader = new FXMLLoader(ClassLoader.getSystemResource("layouts/login.fxml"));
-            loader.setController(new LoginController(this));
+            loginController = new LoginController(this);
+            loader.setController(loginController);
             final Parent root = loader.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -102,6 +104,10 @@ public class ViewImpl implements View{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Features getFeatures() {
+        return features;
     }
 
     
