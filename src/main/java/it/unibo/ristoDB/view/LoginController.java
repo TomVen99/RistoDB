@@ -50,7 +50,7 @@ public class LoginController {
     @FXML
     void backOfficeLogin(ActionEvent event) {
         System.out.println("*************************" + features);
-        if(features.findUser(username.getText(), password.getText())) {
+        if(features.checkUser(username.getText(), password.getText())) {
             view.setBackOfficeScene();
         }else {
             errorMessage.setText("password o nome utente errati");
@@ -60,7 +60,7 @@ public class LoginController {
 
     @FXML
     void frontOfficeLogin(ActionEvent event) {
-        if(features.findUser(username.getText(), password.getText())) {
+        if(features.checkUser(username.getText(), password.getText())) {
             view.setFrontOfficeScene();
         }else {
             errorMessage.setText("password o nome utente errati");

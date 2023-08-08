@@ -10,6 +10,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.unibo.ristoDB.db.Category;
@@ -151,23 +152,18 @@ public class FeaturesImpl implements Features{
 
     /*****Devo verificare se l'user va bene e non è duplicato */
     @Override
-    public boolean addEmployee(final String firstName, final String lastName, final String username, final String password) {
-        if(findUser(username, password)){
-            final String queryEmployee = "INSERT INTO Employees "
-                    + "(name, lastname) "
-                    + " VALUES (?,?)";
-            final String queryUser = "INSERT INTO Users "
-                    + "(username, password) "
-                    + " VALUES (?,?)";
+    public boolean addEmployee(final String name, final String lastName, final String username, final String password) {
+        if(!findUser(username)){
+            final String query = "INSERT INTO Users "
+                    + "(username, password, name, lastname) "
+                    + " VALUES (?,?,?,?)";
             try {
-                PreparedStatement statement = this.connection.prepareStatement(queryEmployee);
-                PreparedStatement statement2 = this.connection.prepareStatement(queryUser);
-                statement.setString(1, firstName);
-                statement.setString(2, lastName);
-                statement2.setString(1, username);
-                statement2.setString(2, password);
+                PreparedStatement statement = this.connection.prepareStatement(query);
+                statement.setString(1, username);
+                statement.setString(2, password);
+                statement.setString(3, name);
+                statement.setString(4, lastName);
                 statement.executeUpdate();
-                statement2.executeUpdate();
                 return true;
             } catch (final SQLIntegrityConstraintViolationException e) {
                 throw new IllegalArgumentException(e);
@@ -177,18 +173,17 @@ public class FeaturesImpl implements Features{
         }else {
             return false;
         }
-
     }
+
     /**
      * @param username user to find
      * @return true if username don't exist
      */
-    public boolean findUser(String username, String password) {
+    public boolean findUser(String username){
         final String query = "SELECT * from USERS "
-                    + "WHERE users.username = ? AND users.password = ?";
+                    + "WHERE users.username = ? ";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
                 statement.setString(1, username);
-                statement.setString(2, password);
                 final ResultSet result = statement.executeQuery();
                 return result.next();
             } catch (final SQLIntegrityConstraintViolationException e) {
@@ -296,5 +291,79 @@ public class FeaturesImpl implements Features{
     public ObservableList<Date> viewAllDate() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'viewAllDate'");
+    }
+
+    @Override
+    public boolean findShift(String date, String dayMoment) {
+        final String query = "SELECT * from WORKSHIFTS "
+                    + "WHERE date = ? AND day_Moment = ?";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setString(1, date);
+                statement.setString(2, dayMoment);
+                final ResultSet result = statement.executeQuery();
+                return result.next();
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+    }
+
+    @Override
+    public void associateEmployeeShift(String date, String dayMoment, String user) {
+        final String query = "INSERT INTO Shifts_assignment "
+                + "(username, date, day_Moment) "
+                + " VALUES (?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setString(1, user);
+            statement.setString(2, date);
+            statement.setString(3, dayMoment);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public boolean checkUser(String username, String password) {
+        final String query = "SELECT * from USERS "
+                    + "WHERE users.username = ? AND users.password = ?";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setString(1, username);
+                statement.setString(2, password);
+                final ResultSet result = statement.executeQuery();
+                return result.next();
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+    }
+
+    @Override
+    public Map<String, List<String>> viewEmployeesOnShift(Date date, String dayMoment) {
+        final String query = "SELECT u.username, u.name, u.lastname, s.date, s.day_Moment from Users as u "
+            + "join shifts_assignment s on s.username = u.username "
+            + "join workshifts w on w.date = s.date AND w.day_Moment = s.day_Moment "
+            + "where s.date = ? and s.day_Moment = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1,date.toString());
+            statement.setString(2,dayMoment);
+            final ResultSet result = statement.executeQuery();
+            final Map<String, List<String>> map = new HashMap<>();
+            while (result.next()) {
+                List<String> list = new ArrayList<>();
+                map.put(result.getString("username"), list);
+                list.add(result.getString("name"));
+                list.add(result.getString("lastname"));
+                list.add(result.getString("date"));
+                list.add(result.getString("day_Moment"));
+            }
+            return map;
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }    
 }

@@ -2,6 +2,7 @@ package it.unibo.ristoDB.model;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import it.unibo.ristoDB.db.Category;
@@ -116,7 +117,15 @@ public interface Features {
      */
     ObservableList<Date> viewAllDate();
 
-    boolean findUser(String username, String password);
+    boolean findUser(String username);
+
+    boolean findShift(String date, String dayMoment);
+
+    void associateEmployeeShift(String date, String dayMoment, String user);
+
+    boolean checkUser(String username, String password);
+
+    ObservableList<String> viewEmployeesOnShift(Date date, String dayMoment);
 
     
 }

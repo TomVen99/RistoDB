@@ -35,7 +35,7 @@ public final class Utils {
      */
     public static Optional<java.util.Date> buildDate(final String dateString) {
         try {
-            final String dateFormatString = "dd/mm/yyyy";
+            final String dateFormatString = "dd/MM/yyyy";
             final java.util.Date date = new SimpleDateFormat(dateFormatString, Locale.ITALIAN).parse(dateString);
             return Optional.of(date);
         } catch (final ParseException e) {

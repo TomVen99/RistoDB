@@ -14,7 +14,7 @@
    <children>
       <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualizza dipendenti di turno" wrappingWidth="167.68119748737445" />
       <TextField fx:id="shiftDate" layoutX="16.0" layoutY="31.0" promptText="Data  (dd/mm/yyyy)" />
-      <Button layoutX="16.0" layoutY="138.0" mnemonicParsing="false" onAction="#viewEmployeesOnShiftOnClick" prefHeight="25.0" prefWidth="149.0" text="Visualizza">
+      <Button fx:id="viewEmployeesOnShiftButton" layoutX="16.0" layoutY="138.0" mnemonicParsing="false" onAction="#viewEmployeesOnShift" prefHeight="25.0" prefWidth="149.0" text="Visualizza">
          <font>
             <Font size="12.0" />
          </font>
@@ -49,7 +49,7 @@
       <Separator layoutX="178.0" layoutY="180.0" orientation="VERTICAL" prefHeight="220.0" prefWidth="7.0" />
       <Text layoutX="192.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Associa cameriere al turno" wrappingWidth="167.68119748737445" />
       <Separator layoutX="356.0" layoutY="181.0" orientation="VERTICAL" prefHeight="220.0" prefWidth="7.0" />
-      <ComboBox fx:id="comboBoxShift" layoutX="16.0" layoutY="69.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
+      <ComboBox fx:id="comboBoxDayMoment" layoutX="16.0" layoutY="69.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
       <TextField fx:id="shiftDateAssociate" layoutX="195.0" layoutY="205.0" promptText="Data  (dd/mm/yyyy)" />
       <ComboBox fx:id="comboBoxShiftAssociate" layoutX="195.0" layoutY="241.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
       <TextField fx:id="employeeUserAssociate" layoutX="195.0" layoutY="277.0" prefHeight="25.0" prefWidth="149.0" promptText="utente">

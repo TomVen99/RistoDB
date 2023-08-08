@@ -37,9 +37,9 @@ public class OrdersController {
 
     @FXML
     void initialize() {
-        //categories = features.viewAllCategory();
+        categories = features.viewAllCategory();
         categories.forEach(c->comboBoxCategories.getItems().add(c.getName()));
-        newQuantity.setDisable(true);
+        quantity.setDisable(true);
         comboBoxProducts.setDisable(true);
         modifyOrderButton.setDisable(true);
     }
@@ -48,7 +48,7 @@ public class OrdersController {
     @FXML private ComboBox<String> comboBoxCategories;
     @FXML private ComboBox<String> comboBoxProducts;
     @FXML private Button modifyOrderButton;
-    @FXML private TextField newQuantity;
+    @FXML private TextField quantity;
     @FXML private TableView<?> productsAlreadyOrdered;
     
     @FXML
@@ -60,8 +60,9 @@ public class OrdersController {
     }
 
     @FXML
-    void showQuantityAlreadyOrdered(ActionEvent event) {
-        newQuantity.setText("0");
+    void enableQuantity(ActionEvent event) {
+        quantity.setText("0");
+        quantity.setDisable(false);
         modifyOrderButton.setDisable(false);
     }
 
@@ -72,14 +73,14 @@ public class OrdersController {
          * SE NON ESISTE DEVO CREARE UN NUOVO ORDINE E COLLEGARGLI I VARI DETTAGLI ORDINI
          */
         int productId = productsByCategory.get(comboBoxProducts.getSelectionModel().getSelectedIndex()).getId();
-        features.addOrderDetails(productId, Integer.parseInt(newQuantity.getText()));
+        features.addOrderDetails(productId, Integer.parseInt(quantity.getText()));
     }
 
     
     @FXML
     void enableModifyOrderSection(ActionEvent event) {
-        newQuantity.setDisable(false);
-        newQuantity.setText("0");
+        quantity.setDisable(false);
+        quantity.setText("0");
         modifyOrderButton.setDisable(false);
     }
 
