@@ -13,8 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class OrdersController {
 
@@ -42,6 +44,20 @@ public class OrdersController {
         quantity.setDisable(true);
         comboBoxProducts.setDisable(true);
         modifyOrderButton.setDisable(true);
+        showReceiptOrder(productsAlreadyOrdered, features.showReceiptOrder(selectedTable));
+    }
+
+    private void showReceiptOrder(final TableView view, final ObservableList<ReceiptsOrder> data) {
+        view.getColumns().clear();
+        final TableColumn<ReceiptsOrder, String> productName = new TableColumn<>("Prodotto");
+        productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        final TableColumn<ReceiptsOrder, Integer> quantity = new TableColumn<>("Quantità");
+        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo");
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        view.getColumns().addAll(productName, quantity, price);
+        view.setItems(data);
+        System.out.println("stampato");
     }
 
     @FXML private Button backButton;
@@ -49,11 +65,12 @@ public class OrdersController {
     @FXML private ComboBox<String> comboBoxProducts;
     @FXML private Button modifyOrderButton;
     @FXML private TextField quantity;
-    @FXML private TableView<?> productsAlreadyOrdered;
+    @FXML private TableView<ReceiptsOrder> productsAlreadyOrdered;
     
     @FXML
     void enableComboBoxProducts(ActionEvent event) {
         comboBoxProducts.setDisable(false);
+        comboBoxProducts.getItems().clear();;
         productsByCategory = features.viewProductsByCategory(categories.get(
             comboBoxCategories.getSelectionModel().getSelectedIndex()).getName());
         productsByCategory.forEach(p->comboBoxProducts.getItems().add(p.getName()));
@@ -73,7 +90,11 @@ public class OrdersController {
          * SE NON ESISTE DEVO CREARE UN NUOVO ORDINE E COLLEGARGLI I VARI DETTAGLI ORDINI
          */
         int productId = productsByCategory.get(comboBoxProducts.getSelectionModel().getSelectedIndex()).getId();
-        features.addOrderDetails(productId, Integer.parseInt(quantity.getText()));
+        System.out.println("Codice prodotto " + productId);
+        features.addOrderDetails(productId,Integer.parseInt(quantity.getText()));
+        this.initialize();
+        comboBoxCategories.getSelectionModel().selectFirst();
+        comboBoxProducts.getItems().clear();
     }
 
     

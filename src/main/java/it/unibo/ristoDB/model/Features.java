@@ -10,6 +10,7 @@ import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.db.User;
+import it.unibo.ristoDB.view.ReceiptsOrder;
 import javafx.collections.ObservableList;
 
 public interface Features {
@@ -79,7 +80,12 @@ public interface Features {
     /**
      * Show total of the receipt
      */
-    void showReceipt(int tableNumber);
+    float showReceiptTotal(int tableNumber);
+
+    /**
+     * Show total of the receipt
+     */
+    ObservableList<ReceiptsOrder> showReceiptOrder(int tableNumber);
 
     /**
      * 
@@ -129,6 +135,10 @@ public interface Features {
     ObservableList<User> viewEmployeesOnShift(java.sql.Date date, String dayMoment);
 
     ObservableList<User> viewAllUsers();
+
+    void setSelectedTableNumber(int tableNumber);
+
+    void setUsername(String username);
 
     
 }

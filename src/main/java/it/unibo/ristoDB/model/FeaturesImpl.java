@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +21,15 @@ import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.db.User;
+import it.unibo.ristoDB.view.ReceiptsOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FeaturesImpl implements Features{
 
     private final Connection connection;
+    private int tableNumber;
+    private String username;
 
     public FeaturesImpl(Connection connection) {
         this.connection = connection;
@@ -102,7 +109,7 @@ public class FeaturesImpl implements Features{
             final ResultSet result = statement.executeQuery();
             final ObservableList<OrderDetail> list = FXCollections.observableArrayList();
             while (result.next()) {
-                list.add(new OrderDetail(result.getInt("order_ID"), new HashMap<>()));
+                //list.add(new OrderDetail(result.getInt("order_ID"), new HashMap<>()));
             }
             return list;
         } catch (final SQLException e) {
@@ -259,14 +266,98 @@ public class FeaturesImpl implements Features{
 
     @Override
     public void addOrderDetails(int productId, int quantity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addOrderDetails'");
+        /*devo impostare il tavolo busy true, verifiare che ci siano i coperti */
+        java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+        java.sql.Time time = java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+        addOrder(date,time);
+        System.out.println("qui sono arrivato *************************");
+        final String query = "INSERT INTO Orders_Details "
+                + " VALUES (?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setInt(1, productId);
+            statement.setDate(2, date);
+            statement.setTime(3, time);
+            statement.setInt(4, quantity);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            System.out.println(e);
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            System.out.println(e);
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void addOrder(java.sql.Date date, java.sql.Time time) {
+        final String query = "INSERT INTO Orders "
+                + " VALUES (?,?,?,?)";
+        System.out.println("numero tavolo "+ tableNumber + "username "+ username);
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setDate(1, date);
+            statement.setTime(2, time);
+            statement.setString(3, username);
+            statement.setInt(4, tableNumber);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            System.out.println(e);
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            System.out.println(e);
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
-    public void showReceipt(int tableNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showReceipt'");
+    public float showReceiptTotal(int tableNumber) {
+        final String query = "select SUM(price*quantity) as total from orders_details as od "
+                    + "join products as p "
+                    + "on p.id = od.product_id "
+                    + "where od.date in (select o.date from Orders as o "
+                        + "where o.number = ?) "
+                    + "and od.time in (select o.time from Orders as o "
+                        + "where o.number = ?)";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setInt(1, tableNumber);
+                statement.setInt(2, tableNumber);
+                final ResultSet result = statement.executeQuery();
+                if(result.next()) {
+                    return result.getFloat("total");
+                }else {
+                    System.out.println("Errore stampa del totale");
+                    return 0;
+                }
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+    }
+
+    @Override
+    public ObservableList<ReceiptsOrder> showReceiptOrder(int tableNumber) {
+        final String query = "select p.name, p.price, SUM(od.quantity) as quantity from orders_details as od "
+                    + "join products as p "
+                    + "on p.id = od.product_id "
+                    + "where od.date in (select o.date from Orders as o "
+                        + "where o.number = ?) "
+                    + "and od.time in (select o.time from Orders as o "
+                        + "where o.number = ?)"
+                    + "group by p.name, p.price";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setInt(1, tableNumber);
+                statement.setInt(2, tableNumber);
+                final ResultSet result = statement.executeQuery();
+                final ObservableList<ReceiptsOrder> list = FXCollections.observableArrayList();
+                while (result.next()) {
+                    list.add(new ReceiptsOrder(result.getString("name"), result.getInt("quantity"), result.getFloat("price")));
+                }
+                System.out.println(list);
+                return list;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override
@@ -385,5 +476,15 @@ public class FeaturesImpl implements Features{
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public void setSelectedTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
     }    
 }

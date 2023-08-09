@@ -25,7 +25,7 @@ public class LoginController {
     @FXML private TextField username;
 
     /** The database name used to login. */
-    private static final String DB_NAME = "RistoDB";
+    private static final String DB_NAME = "RistoDB_new";
     private Features features;
     private final ViewImpl view;
 
@@ -51,6 +51,7 @@ public class LoginController {
     void backOfficeLogin(ActionEvent event) {
         System.out.println("*************************" + features);
         if(features.checkUser(username.getText(), password.getText())) {
+            features.setUsername(username.getText());
             view.setBackOfficeScene();
         }else {
             errorMessage.setText("password o nome utente errati");
@@ -61,6 +62,7 @@ public class LoginController {
     @FXML
     void frontOfficeLogin(ActionEvent event) {
         if(features.checkUser(username.getText(), password.getText())) {
+            features.setUsername(username.getText());
             view.setFrontOfficeScene();
         }else {
             errorMessage.setText("password o nome utente errati");

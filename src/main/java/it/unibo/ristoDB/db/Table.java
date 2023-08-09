@@ -9,6 +9,7 @@ public class Table {
     public Table(int number, int maxPeople) {
         this.number = number;
         this.maxPeople = maxPeople;
+        busy = false;
     }
 
     public int getNumber() {
@@ -17,6 +18,10 @@ public class Table {
 
     public int getMaxPeople() {
         return maxPeople;
-    }   
+    }  
+    
+    public boolean isBusy() {
+        return busy;
+    }
     
 }

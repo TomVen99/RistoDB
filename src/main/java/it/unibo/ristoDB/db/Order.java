@@ -6,20 +6,16 @@ import java.util.List;
 
 public class Order {
 
-    private int id;
     private Date date;
     private Time time;
-    private List<Product> products;
+    private String username;
     private int tableNumber;
-    private int idCamerirere;
 
-    public Order(int id, Date date, Time time, List<Product> products, int tableNumber, int idCamerirere) {
-        this.id = id;
+    public Order(Date date, Time time, String username, int tableNumber) {
         this.date = date;
         this.time = time;
-        this.products = products;
+        this.username = username;
         this.tableNumber = tableNumber;
-        this.idCamerirere = idCamerirere;
     }
 
     public Date getDate() {
@@ -30,8 +26,13 @@ public class Order {
         return time;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public String getUsername() {
+        return username;
     }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
     
 }

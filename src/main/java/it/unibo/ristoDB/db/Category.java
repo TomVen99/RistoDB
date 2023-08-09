@@ -1,7 +1,5 @@
 package it.unibo.ristoDB.db;
 
-import java.util.List;
-
 public class Category {
 
     private String name;
@@ -13,6 +11,5 @@ public class Category {
     public String getName() {
         return name;
     }
-
     
 }
