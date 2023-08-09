@@ -69,6 +69,7 @@ public class FrontOfficeController {
         int table = comboBoxSelectTable.getSelectionModel().getSelectedItem();
         totalLabel.setText(Float.toString(features.showReceiptTotal(table)));
         showReceiptOrder(orderListTableView, features.showReceiptOrder(table));
+        features.closeTable();
     }
 
     private void showReceiptOrder(final TableView view, final ObservableList<ReceiptsOrder> data) {
@@ -77,7 +78,7 @@ public class FrontOfficeController {
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         final TableColumn<ReceiptsOrder, Integer> quantity = new TableColumn<>("Quantità");
         quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo");
+        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo unitario");
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         view.getColumns().addAll(productName, quantity, price);
         view.setItems(data);
@@ -91,7 +92,18 @@ public class FrontOfficeController {
 
     @FXML
     void viewOpenedTables(ActionEvent event) {
+        showOpenedTables(openedTableTableView,features.viewOpenedTables());
+    }
 
+    private void showOpenedTables(final TableView view, final ObservableList<Table> data) {
+        view.getColumns().clear();
+        final TableColumn<Table, String> number = new TableColumn<>("Numero");
+        number.setCellValueFactory(new PropertyValueFactory<>("number"));
+        final TableColumn<Table, Integer> maxPeople = new TableColumn<>("Max_pers");
+        maxPeople.setCellValueFactory(new PropertyValueFactory<>("maxPeople"));
+        view.getColumns().addAll(number, maxPeople);
+        view.setItems(data);
+        System.out.println("stampato");
     }
 
 }

@@ -140,5 +140,9 @@ public interface Features {
 
     void setUsername(String username);
 
+    ObservableList<Table> viewOpenedTables();
+
+    void closeTable();
+
     
 }

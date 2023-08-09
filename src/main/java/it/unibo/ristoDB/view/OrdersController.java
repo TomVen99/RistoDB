@@ -53,7 +53,7 @@ public class OrdersController {
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         final TableColumn<ReceiptsOrder, Integer> quantity = new TableColumn<>("Quantità");
         quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo");
+        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo unitario");
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         view.getColumns().addAll(productName, quantity, price);
         view.setItems(data);

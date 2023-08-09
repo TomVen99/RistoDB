@@ -290,6 +290,7 @@ public class FeaturesImpl implements Features{
 
     private void addOrder(java.sql.Date date, java.sql.Time time) {
         final String query = "INSERT INTO Orders "
+                + " (date,time,username,number)"
                 + " VALUES (?,?,?,?)";
         System.out.println("numero tavolo "+ tableNumber + "username "+ username);
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -486,5 +487,41 @@ public class FeaturesImpl implements Features{
     @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public ObservableList<Table> viewOpenedTables() {
+        final String query = "select t.number, t.max_people from tables t"
+            + " where t.number in (select t.number from tables t"
+            + " join orders o on o.number = t.number)";
+        try (Statement statement = connection.createStatement()) {
+            final ResultSet result = statement.executeQuery(query);
+            final ObservableList<Table> list = FXCollections.observableArrayList();
+            while (result.next()) {
+                list.add(new Table(
+                    result.getInt("number"),
+                    result.getInt("max_people")
+                )); 
+            }
+            return list;
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void closeTable() {
+        final String query = "UPDATE Orders "
+                + " SET closing_time = ?"
+                + " WHERE number = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setTime(1, java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS)));
+            statement.setInt(2, tableNumber);
+            statement.executeUpdate();
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new IllegalArgumentException(e);
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }    
 }
