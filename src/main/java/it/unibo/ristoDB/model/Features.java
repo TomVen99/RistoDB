@@ -9,6 +9,7 @@ import it.unibo.ristoDB.db.Category;
 import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
+import it.unibo.ristoDB.db.User;
 import javafx.collections.ObservableList;
 
 public interface Features {
@@ -119,13 +120,15 @@ public interface Features {
 
     boolean findUser(String username);
 
-    boolean findShift(String date, String dayMoment);
+    boolean findShift(java.sql.Date date, String dayMoment);
 
-    void associateEmployeeShift(String date, String dayMoment, String user);
+    void associateEmployeeShift(java.sql.Date date, String dayMoment, String user);
 
     boolean checkUser(String username, String password);
 
-    ObservableList<String> viewEmployeesOnShift(Date date, String dayMoment);
+    ObservableList<User> viewEmployeesOnShift(java.sql.Date date, String dayMoment);
+
+    ObservableList<User> viewAllUsers();
 
     
 }

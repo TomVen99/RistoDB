@@ -1,16 +1,13 @@
 package it.unibo.ristoDB.view;
 
-import it.unibo.ristoDB.db.Employee;
+import it.unibo.ristoDB.db.User;
 import it.unibo.ristoDB.model.Features;
-import it.unibo.ristoDB.utils.Utils;
 
 import java.net.URL;
-import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 
@@ -23,11 +20,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 public class WorkshiftController {
 
     private enum shiftTipologyEnum {Pranzo, Cena;}
     private final ObservableList<String> shiftTipology = FXCollections.observableArrayList();
+    private ObservableList<User> users = FXCollections.observableArrayList();
     private final Features features;
     private ViewImpl view;
 
@@ -45,13 +44,14 @@ public class WorkshiftController {
     @FXML private TextField employeeName;
     @FXML private TextField employeePassword;
     @FXML private TextField employeeUser;
-    @FXML private TextField employeeUserAssociate;
+    @FXML private ComboBox<String> comboBoxEmployeeUserAssociate;
     @FXML private TableView<String> employeeView;
     @FXML private ComboBox<String> comboBoxShiftAssociate;
     @FXML private ComboBox<String> comboBoxDayMoment;
     @FXML private TextField shiftDate;
     @FXML private TextField shiftDateAssociate;
     @FXML private Button viewEmployeesOnShiftButton;
+    @FXML private Text errorMessage;
     
     @FXML
     void addEmployee(ActionEvent event) {
@@ -59,24 +59,33 @@ public class WorkshiftController {
                 employeeUser.getText(), employeePassword.getText())) {
                     System.out.println("utente aggiunto");
                 }else {
-                    System.out.println("errore");
+                    errorMessage.setOpacity(100);
                 }
         employeeName.clear();
         employeeLastname.clear();
         employeeUser.clear();
         employeePassword.clear();
+        this.initialize();
     }
 
     @FXML
     void associateEmployeeShift(ActionEvent event) {
-        if(features.findShift(shiftDateAssociate.getText(),comboBoxShiftAssociate.getSelectionModel().getSelectedItem())
-            && features.findUser(employeeUserAssociate.getText())){
-                features.associateEmployeeShift(shiftDateAssociate.getText(),
-                    comboBoxShiftAssociate.getSelectionModel().getSelectedItem(), employeeUserAssociate.getText());
-                    shiftDateAssociate.clear();
-                    employeeUserAssociate.clear();                    
-        }else{
-            System.out.println("errore ricerca utente o turno non presente");
+        try {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date date = sdf1.parse(shiftDateAssociate.getText());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            //System.out.println("associate " +sqlDate);
+            if(features.findShift(sqlDate,comboBoxShiftAssociate.getSelectionModel().getSelectedItem())
+                && features.findUser(comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem())){
+                    features.associateEmployeeShift(sqlDate,
+                        comboBoxShiftAssociate.getSelectionModel().getSelectedItem(),
+                        comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem());
+                        shiftDateAssociate.clear();                    
+            }else{
+                System.out.println("errore ricerca utente o turno non presente");
+            }
+        }catch(ParseException e) {
+            System.out.println(e);
         }
     }
 
@@ -94,35 +103,38 @@ public class WorkshiftController {
             System.out.println(sqlDate);
             showEmployees(employeeView, features.viewEmployeesOnShift( sqlDate,
                 comboBoxDayMoment.getSelectionModel().getSelectedItem()));
-        } catch (Exception e) {
+        } catch (ParseException e) {
             System.out.println(e);
         }
     }
 
     @FXML
     void initialize() {
+        shiftTipology.clear();
         for(int i = 0; i < shiftTipologyEnum.values().length; i++) {
             shiftTipology.add(shiftTipologyEnum.values()[i].toString());
         }
+        comboBoxDayMoment.getItems().clear();
+        comboBoxShiftAssociate.getItems().clear();
         comboBoxDayMoment.getItems().addAll(shiftTipology);
         comboBoxShiftAssociate.getItems().addAll(shiftTipology);
+        users = features.viewAllUsers();
+        users.remove(0);
+        comboBoxEmployeeUserAssociate.getItems().clear();
+        comboBoxEmployeeUserAssociate.getItems().addAll(users.stream().map(u->u.getUsername()).collect(Collectors.toList()));
     }
 
-    private void showEmployees(final TableView<String> view, final ObservableList<String> data) {
+    private void showEmployees(final TableView view, final ObservableList<User> data) {
         view.getColumns().clear();
-        final TableColumn<String, String> name = new TableColumn<>("name");
-        //name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        final TableColumn<String, String> username = new TableColumn<>("username");
-        //username.setCellValueFactory(new PropertyValueFactory<>("username"));
-        final TableColumn<String, String> lastname = new TableColumn<>("lastname");
-        //lastname.setCellValueFactory(new PropertyValueFactory<>("lastname"));
-        final TableColumn<String, String> date = new TableColumn<>("date");
-        //date.setText("pippo");
-        //date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        final TableColumn<String, String> dayMoment = new TableColumn<>("day_Moment");
-        //dayMoment.setCellValueFactory(new PropertyValueFactory<>("day_Momnet"));
-        view.getColumns().addAll(username, name, lastname, date, dayMoment);
-        //view.setItems(data);
+        final TableColumn<User, String> name = new TableColumn<>("Nome");
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        final TableColumn<User, Integer> lastname = new TableColumn<>("Cognome");
+        lastname.setCellValueFactory(new PropertyValueFactory<>("lastname"));
+        final TableColumn<User, String> username = new TableColumn<>("Username");
+        username.setCellValueFactory(new PropertyValueFactory<>("username"));
+        view.getColumns().addAll(name, lastname, username);
+        System.out.println("stampato");
+        view.setItems(data);
     }
 
 }

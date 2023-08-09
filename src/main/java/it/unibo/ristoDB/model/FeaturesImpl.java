@@ -10,13 +10,13 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import it.unibo.ristoDB.db.Category;
 import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
+import it.unibo.ristoDB.db.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -153,7 +153,7 @@ public class FeaturesImpl implements Features{
     /*****Devo verificare se l'user va bene e non è duplicato */
     @Override
     public boolean addEmployee(final String name, final String lastName, final String username, final String password) {
-        if(!findUser(username)){
+        if(!findUser(username) && name != "" && lastName != "" && username != "" && password != ""){
             final String query = "INSERT INTO Users "
                     + "(username, password, name, lastname) "
                     + " VALUES (?,?,?,?)";
@@ -294,11 +294,11 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public boolean findShift(String date, String dayMoment) {
+    public boolean findShift(java.sql.Date date, String dayMoment) {
         final String query = "SELECT * from WORKSHIFTS "
                     + "WHERE date = ? AND day_Moment = ?";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-                statement.setString(1, date);
+                statement.setDate(1, date);
                 statement.setString(2, dayMoment);
                 final ResultSet result = statement.executeQuery();
                 return result.next();
@@ -310,13 +310,12 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void associateEmployeeShift(String date, String dayMoment, String user) {
+    public void associateEmployeeShift(java.sql.Date date, String dayMoment, String user) {
         final String query = "INSERT INTO Shifts_assignment "
-                + "(username, date, day_Moment) "
                 + " VALUES (?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setString(1, user);
-            statement.setString(2, date);
+            statement.setDate(2, date);
             statement.setString(3, dayMoment);
             statement.executeUpdate();
         } catch (final SQLIntegrityConstraintViolationException e) {
@@ -343,25 +342,46 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public Map<String, List<String>> viewEmployeesOnShift(Date date, String dayMoment) {
-        final String query = "SELECT u.username, u.name, u.lastname, s.date, s.day_Moment from Users as u "
+    public ObservableList<User> viewEmployeesOnShift(java.sql.Date date, String dayMoment) {
+        final String query = "SELECT u.username, u.name, u.lastname, u.password from Users as u "
             + "join shifts_assignment s on s.username = u.username "
             + "join workshifts w on w.date = s.date AND w.day_Moment = s.day_Moment "
             + "where s.date = ? and s.day_Moment = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1,date.toString());
-            statement.setString(2,dayMoment);
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            statement.setDate(1, date);
+            statement.setString(2, dayMoment);
             final ResultSet result = statement.executeQuery();
-            final Map<String, List<String>> map = new HashMap<>();
+            final ObservableList<User> data = FXCollections.observableArrayList();
+            data.clear();
             while (result.next()) {
-                List<String> list = new ArrayList<>();
-                map.put(result.getString("username"), list);
-                list.add(result.getString("name"));
-                list.add(result.getString("lastname"));
-                list.add(result.getString("date"));
-                list.add(result.getString("day_Moment"));
+                data.add(new User(
+                    result.getString("username"),
+                        result.getString("password"),
+                        result.getString("name"),
+                        result.getString("lastname")
+                )); 
             }
-            return map;
+            return data;
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public ObservableList<User> viewAllUsers() {
+        final String query = "SELECT * from Users";
+        try (Statement statement = connection.createStatement()) {
+            final ResultSet result = statement.executeQuery(query);
+            final ObservableList<User> list = FXCollections.observableArrayList();
+            while (result.next()) {
+                list.add(new User(
+                    result.getString("username"),
+                        result.getString("password"),
+                        result.getString("name"),
+                        result.getString("lastname")
+                )); 
+            }
+            return list;
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }

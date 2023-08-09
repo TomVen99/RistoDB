@@ -52,11 +52,12 @@
       <ComboBox fx:id="comboBoxDayMoment" layoutX="16.0" layoutY="69.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
       <TextField fx:id="shiftDateAssociate" layoutX="195.0" layoutY="205.0" promptText="Data  (dd/mm/yyyy)" />
       <ComboBox fx:id="comboBoxShiftAssociate" layoutX="195.0" layoutY="241.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
-      <TextField fx:id="employeeUserAssociate" layoutX="195.0" layoutY="277.0" prefHeight="25.0" prefWidth="149.0" promptText="utente">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </TextField>
       <Button fx:id="associateButton" layoutX="195.0" layoutY="350.0" mnemonicParsing="false" onAction="#associateEmployeeShift" prefHeight="25.0" prefWidth="149.0" text="Associa" />
+      <ComboBox fx:id="comboBoxEmployeeUserAssociate" layoutX="195.0" layoutY="279.0" prefWidth="150.0" promptText="Utente" />
+      <Text fx:id="errorMessage" fill="RED" layoutX="16.0" layoutY="390.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="errore" wrappingWidth="149.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

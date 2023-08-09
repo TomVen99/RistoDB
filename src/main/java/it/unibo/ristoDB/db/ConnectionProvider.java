@@ -27,7 +27,7 @@ public final class ConnectionProvider {
      * @throws IllegalStateException if the connection could not be establish
      */
     public Connection getMySQLConnection() {
-        final String dbUri = "jdbc:mysql://127.0.0.1:3306/" + this.dbName +"?serverTimezone=UTC";
+        final String dbUri = "jdbc:mysql://127.0.0.1:3306/" + this.dbName +"?serverTimezone=Europe/Rome";
         try {
             System.out.println(dbUri);
             System.out.println(username);
