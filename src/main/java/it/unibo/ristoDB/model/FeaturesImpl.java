@@ -316,7 +316,7 @@ public class FeaturesImpl implements Features{
                     + "where od.date in (select o.date from Orders as o "
                         + "where o.number = ?) "
                     + "and od.time in (select o.time from Orders as o "
-                        + "where o.number = ?)";
+                        + "where o.number = ? and o.closing_time is NULL)";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
                 statement.setInt(1, tableNumber);
                 statement.setInt(2, tableNumber);
@@ -342,7 +342,7 @@ public class FeaturesImpl implements Features{
                     + "where od.date in (select o.date from Orders as o "
                         + "where o.number = ?) "
                     + "and od.time in (select o.time from Orders as o "
-                        + "where o.number = ?)"
+                        + "where o.number = ? and o.closing_time is NULL)"
                     + "group by p.name, p.price";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
                 statement.setInt(1, tableNumber);
@@ -493,7 +493,8 @@ public class FeaturesImpl implements Features{
     public ObservableList<Table> viewOpenedTables() {
         final String query = "select t.number, t.max_people from tables t"
             + " where t.number in (select t.number from tables t"
-            + " join orders o on o.number = t.number)";
+            + " join orders o on o.number = t.number"
+            + " where o.closing_time is NULL)";
         try (Statement statement = connection.createStatement()) {
             final ResultSet result = statement.executeQuery(query);
             final ObservableList<Table> list = FXCollections.observableArrayList();
@@ -523,5 +524,45 @@ public class FeaturesImpl implements Features{
         } catch (final SQLException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public boolean verifyCovered(int tableNumber) {
+        /*final String query = "select p.name, SUM(od.quantity) as quantity from orders_details as od"
+                + " join products as p"
+                + " on p.id = od.product_id"
+                + " where od.date in (select o.date from Orders as o"
+                + " where o.number = ?)"
+                + " and od.time in (select o.time from Orders as o"
+                + " where o.number = ?) and"
+                + " p.name = ? "
+                + " group by p.name"
+                + " having SUM(od.quantity) > 0 and  SUM(od.quantity) <= (select t.max_people from tables t"
+                + " where t.number = ?)";
+                        ;//and o.closing_time is NULL)";/**********************;*/
+            final String query = "select t.number, t.max_people, SUM(od.quantity) as quantity from tables t" 
+            + " join orders o on o.number = t.number" 
+                    + " join orders_details od on o.date = od.date and o.time = od.time" 
+                    + " join products p on od.product_ID = p.id" 
+                    + " where p.name = ? and t.number = ? and o.closing_time is NULL" 
+                    + " group by t.number, t.max_people" 
+                    + " having SUM(od.quantity) <= t.max_people and SUM(od.quantity) > 0;";
+            try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setString(1, "coperto");
+                //statement.setInt(1, tableNumber);
+                statement.setInt(2, tableNumber);
+                //statement.setInt(4, tableNumber);
+                final ResultSet result = statement.executeQuery();
+                if(result.next()) {
+                    /*System.out.println(result.getString("name"));
+                    System.out.println(result.getInt("quantity"));*/
+                    return true;
+                }
+                return false;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }    
 }

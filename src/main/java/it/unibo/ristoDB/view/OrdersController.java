@@ -39,7 +39,9 @@ public class OrdersController {
 
     @FXML
     void initialize() {
+        comboBoxCategories.getItems().clear();
         categories = features.viewAllCategory();
+        System.out.println("eseguito query1");
         categories.forEach(c->comboBoxCategories.getItems().add(c.getName()));
         quantity.setDisable(true);
         comboBoxProducts.setDisable(true);
@@ -49,15 +51,19 @@ public class OrdersController {
 
     private void showReceiptOrder(final TableView view, final ObservableList<ReceiptsOrder> data) {
         view.getColumns().clear();
-        final TableColumn<ReceiptsOrder, String> productName = new TableColumn<>("Prodotto");
-        productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        final TableColumn<ReceiptsOrder, Integer> quantity = new TableColumn<>("Quantità");
-        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo unitario");
-        price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        view.getColumns().addAll(productName, quantity, price);
-        view.setItems(data);
-        System.out.println("stampato");
+        //if(!data.isEmpty()) {
+            final TableColumn<ReceiptsOrder, String> productName = new TableColumn<>("Prodotto");
+            productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            final TableColumn<ReceiptsOrder, Integer> quantity = new TableColumn<>("Quantità");
+            quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            final TableColumn<ReceiptsOrder, String> price = new TableColumn<>("Prezzo unitario");
+            price.setCellValueFactory(new PropertyValueFactory<>("price"));
+            view.getColumns().addAll(productName, quantity, price);
+            view.setItems(data);
+            System.out.println("stampato");
+        /*}else {
+            System.out.println("lista show receipt order vuota");
+        }*/
     }
 
     @FXML private Button backButton;
@@ -92,9 +98,11 @@ public class OrdersController {
         int productId = productsByCategory.get(comboBoxProducts.getSelectionModel().getSelectedIndex()).getId();
         System.out.println("Codice prodotto " + productId);
         features.addOrderDetails(productId,Integer.parseInt(quantity.getText()));
-        this.initialize();
-        comboBoxCategories.getSelectionModel().selectFirst();
+        showReceiptOrder(productsAlreadyOrdered, features.showReceiptOrder(selectedTable));
+        comboBoxCategories.getItems().clear();
+        categories.forEach(c->comboBoxCategories.getItems().add(c.getName()));
         comboBoxProducts.getItems().clear();
+        quantity.clear();
     }
 
     

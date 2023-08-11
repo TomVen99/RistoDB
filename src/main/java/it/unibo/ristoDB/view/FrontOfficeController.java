@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 public class FrontOfficeController {
 
@@ -31,6 +32,7 @@ public class FrontOfficeController {
     @FXML private TableView<?> openedTableTableView;
     @FXML private Label totalLabel;
     @FXML private Button openedTablesButton;
+    @FXML private Text errorMessage;
 
     private ViewImpl view;
     private final Features features;
@@ -46,6 +48,7 @@ public class FrontOfficeController {
         orderButton.setDisable(true);
         receiptButton.setDisable(true);
         tables = features.viewAllTables();
+        errorMessage.setOpacity(0);
         /*tables.add(new Table(0, false, 0));
         tables.add(new Table(1, false, 0));*/
         tables.forEach(t->comboBoxSelectTable.getItems().add(t.getNumber()));
@@ -62,14 +65,20 @@ public class FrontOfficeController {
     void openOrderScene(ActionEvent event) {
         features.setSelectedTableNumber(comboBoxSelectTable.getSelectionModel().getSelectedItem());
         view.setOrderScene(comboBoxSelectTable.getSelectionModel().getSelectedItem());
+        System.out.println("fatto");
     }
 
     @FXML
     void showReceipt(ActionEvent event) {
         int table = comboBoxSelectTable.getSelectionModel().getSelectedItem();
-        totalLabel.setText(Float.toString(features.showReceiptTotal(table)));
-        showReceiptOrder(orderListTableView, features.showReceiptOrder(table));
-        features.closeTable();
+        if(features.verifyCovered(table)) {
+            System.out.println("verifyCovered ritornatp true");
+            totalLabel.setText(Float.toString(features.showReceiptTotal(table)));
+            showReceiptOrder(orderListTableView, features.showReceiptOrder(table));
+            features.closeTable();
+        }else {
+            errorMessage.setOpacity(100);
+        }
     }
 
     private void showReceiptOrder(final TableView view, final ObservableList<ReceiptsOrder> data) {

@@ -144,5 +144,7 @@ public interface Features {
 
     void closeTable();
 
+    boolean verifyCovered(int tableNumber);
+
     
 }
