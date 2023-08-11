@@ -248,8 +248,27 @@ public class FeaturesImpl implements Features{
 
     @Override
     public Map<String, Float> viewBestEmployee() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewBestEmployee'");
+        java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+        final String query = "select o.username, sum(od.quantity * p.price) as total from orders o"
+            + " join orders_details od on o.date=od.date and o.time=od.time"
+            + " join products p on od.product_ID = p.id"
+            + " where o.date = ? and closing_time is NOT null"
+            + " group by o.username"
+            + " order by total DESC"
+            + " limit 1";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setDate(1, date);
+                final ResultSet result = statement.executeQuery();
+                final Map<String, Float> bestEmployee = new HashMap<>();
+                if(result.next()) {
+                    bestEmployee.put(result.getString("username"), result.getFloat("total"));
+                }
+                return bestEmployee;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override
@@ -381,8 +400,19 @@ public class FeaturesImpl implements Features{
 
     @Override
     public ObservableList<Date> viewAllDate() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewAllDate'");
+        final String query = "select distinct orders.date from orders";
+        try (Statement statement = this.connection.createStatement()) {
+                final ResultSet result = statement.executeQuery(query);
+                final ObservableList<Date> list = FXCollections.observableArrayList();
+                while (result.next()) {
+                list.add(result.getDate("date")); 
+            }
+            return list;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override

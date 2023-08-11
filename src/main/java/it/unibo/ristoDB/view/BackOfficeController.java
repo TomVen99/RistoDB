@@ -40,12 +40,14 @@ public class BackOfficeController {
         categories = features.viewAllCategory();
         comboBoxCategoryRemovingProduct.getItems().clear();
         products = features.viewAllProducts();
-        //dates = features.viewAllDate();
+        dates = features.viewAllDate();
+        System.out.println("fatto query");
+        comboBoxChooseDate.getItems().addAll(dates);
+        System.out.println("caricato combo");
         /*categories.add(new Category(0, "uno", new ArrayList<>()));
         categories.add(new Category(1, "due", new ArrayList<>()));
         Date d = new Date();
-        dates.add(d);
-        comboBoxChooseDate.getItems().addAll(dates);*/
+        dates.add(d);*/
         comboBoxCategoryAddProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
         comboBoxCategoryRemovingProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
     }
@@ -73,6 +75,7 @@ public class BackOfficeController {
     @FXML private TableView<?> viewBestSellingProductsTableView;
     @FXML private Button viewAvarageExpenseButton;
     @FXML private ComboBox<Date> comboBoxChooseDate;
+    @FXML private Label bestEmployeeLabel;
     @FXML private Label viewTotalCoveredLabel;
     @FXML private Label viewAvarageExpenseLabel;
     @FXML private Button viewAvaragePersPerTableButton;
@@ -130,9 +133,14 @@ public class BackOfficeController {
         this.initialize();
     }
 
+    /*possibile controllo aggiuntivo del parimerito */
     @FXML
     void viewBestEmployee(ActionEvent event) {
-        features.viewBestEmployee(); /*mi ritornerebbe una mappa */
+        var bestEmployee = features.viewBestEmployee();
+        if(!bestEmployee.isEmpty()){
+            String employee = bestEmployee.keySet().iterator().next();
+            bestEmployeeLabel.setText(employee + " " + Float.toString(bestEmployee.get(employee)));
+        }
     }
 
     @FXML

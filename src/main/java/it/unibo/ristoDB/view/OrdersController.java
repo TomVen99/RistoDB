@@ -99,9 +99,6 @@ public class OrdersController {
         System.out.println("Codice prodotto " + productId);
         features.addOrderDetails(productId,Integer.parseInt(quantity.getText()));
         showReceiptOrder(productsAlreadyOrdered, features.showReceiptOrder(selectedTable));
-        comboBoxCategories.getItems().clear();
-        categories.forEach(c->comboBoxCategories.getItems().add(c.getName()));
-        comboBoxProducts.getItems().clear();
         quantity.clear();
     }
 
