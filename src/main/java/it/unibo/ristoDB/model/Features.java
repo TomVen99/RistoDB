@@ -142,7 +142,7 @@ public interface Features {
 
     ObservableList<Table> viewOpenedTables();
 
-    void closeTable();
+    void closeTable(int table);
 
     boolean verifyCovered(int tableNumber);
 

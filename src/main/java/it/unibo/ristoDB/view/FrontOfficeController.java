@@ -75,7 +75,7 @@ public class FrontOfficeController {
             System.out.println("verifyCovered ritornatp true");
             totalLabel.setText(Float.toString(features.showReceiptTotal(table)));
             showReceiptOrder(orderListTableView, features.showReceiptOrder(table));
-            features.closeTable();
+            features.closeTable(table);
         }else {
             errorMessage.setOpacity(100);
         }

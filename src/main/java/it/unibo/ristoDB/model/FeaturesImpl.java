@@ -541,14 +541,16 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void closeTable() {
+    public void closeTable(int table) {
         final String query = "UPDATE Orders "
                 + " SET closing_time = ?"
                 + " WHERE number = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setTime(1, java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS)));
-            statement.setInt(2, tableNumber);
+            statement.setInt(2, table);
+            System.out.println("numero tavolo " + tableNumber);
             statement.executeUpdate();
+            System.out.println("CHIUSO TAVOLO");
         } catch (final SQLIntegrityConstraintViolationException e) {
             throw new IllegalArgumentException(e);
         } catch (final SQLException e) {
