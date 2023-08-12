@@ -74,9 +74,9 @@
       <Label layoutX="563.0" layoutY="103.0" prefHeight="25.0" prefWidth="65.0" text="Tot coperti:" />
       <Label fx:id="bestEmployeeLabel" layoutX="395.0" layoutY="211.0" prefHeight="25.0" prefWidth="287.0" text="Nome e Incasso" />
       <Button fx:id="goToFOButton" layoutX="602.0" layoutY="413.0" mnemonicParsing="false" onAction="#goToFrontOffice" prefHeight="25.0" prefWidth="114.0" text="Vai al FrontOffice" />
-      <Text fx:id="errorMessage" fill="RED" layoutX="127.0" layoutY="109.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password o nome utente errati" wrappingWidth="161.21630859375">
+      <Text fx:id="errorMessage" fill="RED" layoutX="553.0" layoutY="18.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="seleziona la data" wrappingWidth="161.21630859375">
          <font>
-            <Font size="10.0" />
+            <Font size="14.0" />
          </font>
       </Text>
       <Label layoutX="394.0" layoutY="32.0" prefHeight="19.0" prefWidth="130.0" text="Seleziona data:">
@@ -85,11 +85,11 @@
          </padding>
       </Label>
       <ComboBox fx:id="comboBoxChooseDate" layoutX="546.0" layoutY="32.0" prefWidth="150.0" />
-      <Label fx:id="viewTotalCoveredLabel" layoutX="668.0" layoutY="105.0" prefHeight="25.0" prefWidth="65.0" text="10" />
+      <Label fx:id="viewTotalCoveredLabel" layoutX="668.0" layoutY="105.0" prefHeight="25.0" prefWidth="65.0" />
       <Label layoutX="564.0" layoutY="71.0" prefHeight="25.0" prefWidth="73.0" text="Spesa media:" />
-      <Label fx:id="viewAvarageExpenseLabel" layoutX="668.0" layoutY="72.0" prefHeight="25.0" prefWidth="65.0" text="30,5" />
+      <Label fx:id="viewAvarageExpenseLabel" layoutX="668.0" layoutY="72.0" prefHeight="25.0" prefWidth="65.0" />
       <Button fx:id="viewAvaragePersPerTableButton" layoutX="395.0" layoutY="139.0" mnemonicParsing="false" onAction="#viewAvaragePersPerTable" prefHeight="25.0" prefWidth="137.0" text="Media persone/tavolo" />
-      <Label fx:id="viewAvaragePersPerTableLabel" layoutX="668.0" layoutY="138.0" prefHeight="25.0" prefWidth="65.0" text="10" />
+      <Label fx:id="viewAvaragePersPerTableLabel" layoutX="668.0" layoutY="138.0" prefHeight="25.0" prefWidth="65.0" />
       <Button fx:id="manageWorkshiftButton" layoutX="68.0" layoutY="34.0" mnemonicParsing="false" onAction="#openManageWorkshiftScene" prefHeight="25.0" prefWidth="208.0" text="Gestisci turni e camerieri" />
       <Separator layoutY="385.0" prefHeight="8.0" prefWidth="375.0" />
       <Button fx:id="viewTotalCoveredButton" layoutX="395.0" layoutY="104.0" mnemonicParsing="false" onAction="#viewTotalCovered" prefHeight="25.0" prefWidth="137.0" text="Visualizza tot coperti" />

@@ -45,9 +45,8 @@ public class BackOfficeController {
         comboBoxCategoryRemovingProduct.getItems().clear();
         products = features.viewAllProducts();
         dates = features.viewAllDate();
-        System.out.println("fatto query");
         comboBoxChooseDate.getItems().addAll(dates);
-        System.out.println("caricato combo");
+        errorMessage.setOpacity(0);
         /*categories.add(new Category(0, "uno", new ArrayList<>()));
         categories.add(new Category(1, "due", new ArrayList<>()));
         Date d = new Date();
@@ -124,8 +123,8 @@ public class BackOfficeController {
 
     @FXML
     void updateProductComboBox(ActionEvent event) {
-            productsByCategory = features.viewProductsByCategory(
-                comboBoxCategoryRemovingProduct.getSelectionModel().getSelectedItem());
+        productsByCategory = features.viewProductsByCategory(
+            comboBoxCategoryRemovingProduct.getSelectionModel().getSelectedItem());
         productsByCategory.forEach(p->comboBoxProductToRemove.getItems().add(p.getName()));
     }
 
@@ -137,13 +136,17 @@ public class BackOfficeController {
         this.initialize();
     }
 
-    /*possibile controllo aggiuntivo del parimerito */
     @FXML
     void viewBestEmployee(ActionEvent event) {
-        var bestEmployee = features.viewBestEmployee(comboBoxChooseDate.getSelectionModel().getSelectedItem());
-        if(!bestEmployee.isEmpty()){
-            String employee = bestEmployee.keySet().iterator().next();
-            bestEmployeeLabel.setText(employee + " " + Float.toString(bestEmployee.get(employee)));
+        if(verifyDate(comboBoxChooseDate.getSelectionModel().getSelectedItem())){
+            var bestEmployee = features.viewBestEmployee(comboBoxChooseDate.getSelectionModel().getSelectedItem());
+            if(!bestEmployee.isEmpty()){
+                String employee = bestEmployee.keySet().iterator().next();
+                bestEmployeeLabel.setText(employee + " " + Float.toString(bestEmployee.get(employee)));
+                errorMessage.setOpacity(0);
+            }
+        }else{
+            errorMessage.setOpacity(100);
         }
     }
 
@@ -165,14 +168,24 @@ public class BackOfficeController {
 
     @FXML
     void viewAvarageExpense(ActionEvent event) {
-        viewAvarageExpenseLabel.setText(Float.toString(
-            features.viewAvarageExpense(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
+        if(verifyDate(comboBoxChooseDate.getSelectionModel().getSelectedItem())){
+            viewAvarageExpenseLabel.setText(Float.toString(
+                features.viewAvarageExpense(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
+                errorMessage.setOpacity(0);
+        }else{
+            errorMessage.setOpacity(100);   
+        }
     }   
 
     @FXML
     void viewAvaragePersPerTable(ActionEvent event) {
-        viewAvaragePersPerTableLabel.setText(Float.toString(
-            features.viewAvaragePeoplePerTable(comboBoxChooseDate.getSelectionModel().getSelectedItem())));   
+        if(verifyDate(comboBoxChooseDate.getSelectionModel().getSelectedItem())){
+            viewAvaragePersPerTableLabel.setText(Float.toString(
+                features.viewAvaragePeoplePerTable(comboBoxChooseDate.getSelectionModel().getSelectedItem())));   
+                errorMessage.setOpacity(0);
+        }else{
+            errorMessage.setOpacity(100);   
+        }
     }
 
     @FXML
@@ -187,8 +200,17 @@ public class BackOfficeController {
 
     @FXML
     void viewTotalCovered(ActionEvent event) {
-        viewTotalCoveredLabel.setText(Integer.toString(
-            features.viewTotalCovered(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
+        if(verifyDate(comboBoxChooseDate.getSelectionModel().getSelectedItem())){
+            viewTotalCoveredLabel.setText(Integer.toString(
+                features.viewTotalCovered(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
+                errorMessage.setOpacity(0);
+        }else{
+            errorMessage.setOpacity(100);   
+        }
+    }
+
+    private boolean verifyDate(Date date) {
+        return date != null;
     }
 
 }
