@@ -4,8 +4,7 @@ import it.unibo.ristoDB.db.User;
 import it.unibo.ristoDB.model.Features;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -48,10 +47,11 @@ public class WorkshiftController {
     @FXML private TableView<String> employeeView;
     @FXML private ComboBox<String> comboBoxShiftAssociate;
     @FXML private ComboBox<String> comboBoxDayMoment;
-    @FXML private TextField shiftDate;
     @FXML private TextField shiftDateAssociate;
     @FXML private Button viewEmployeesOnShiftButton;
     @FXML private Text errorMessage;
+    @FXML private ComboBox<Date> comboBoxShiftDate;
+    @FXML private ComboBox<Date> comboBoxShiftDateAssociate;
     
     @FXML
     void addEmployee(ActionEvent event) {
@@ -70,22 +70,14 @@ public class WorkshiftController {
 
     @FXML
     void associateEmployeeShift(ActionEvent event) {
-        try {
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-            java.util.Date date = sdf1.parse(shiftDateAssociate.getText());
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            //System.out.println("associate " +sqlDate);
-            if(features.findShift(sqlDate,comboBoxShiftAssociate.getSelectionModel().getSelectedItem())
-                && features.findUser(comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem())){
-                    features.associateEmployeeShift(sqlDate,
-                        comboBoxShiftAssociate.getSelectionModel().getSelectedItem(),
-                        comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem());
-                        shiftDateAssociate.clear();                    
-            }else{
-                System.out.println("errore ricerca utente o turno non presente");
-            }
-        }catch(ParseException e) {
-            System.out.println(e);
+        java.sql.Date sqlDate = new java.sql.Date(comboBoxShiftDateAssociate.getSelectionModel().getSelectedItem().getTime());
+        if(features.findShift(sqlDate,comboBoxShiftAssociate.getSelectionModel().getSelectedItem())
+            && features.findUser(comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem())){
+                features.associateEmployeeShift(sqlDate,
+                    comboBoxShiftAssociate.getSelectionModel().getSelectedItem(),
+                    comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem());         
+        }else{
+            System.out.println("errore ricerca utente o turno non presente");
         }
     }
 
@@ -96,16 +88,9 @@ public class WorkshiftController {
 
     @FXML
     void viewEmployeesOnShift(ActionEvent event) {
-        try {
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-            java.util.Date date = sdf1.parse(shiftDate.getText());
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            System.out.println(sqlDate);
-            showEmployees(employeeView, features.viewEmployeesOnShift( sqlDate,
-                comboBoxDayMoment.getSelectionModel().getSelectedItem()));
-        } catch (ParseException e) {
-            System.out.println(e);
-        }
+        java.sql.Date sqlDate = new java.sql.Date(comboBoxShiftDate.getSelectionModel().getSelectedItem().getTime());
+        showEmployees(employeeView, features.viewEmployeesOnShift( sqlDate,
+            comboBoxDayMoment.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
@@ -122,6 +107,8 @@ public class WorkshiftController {
         users.remove(0);
         comboBoxEmployeeUserAssociate.getItems().clear();
         comboBoxEmployeeUserAssociate.getItems().addAll(users.stream().map(u->u.getUsername()).collect(Collectors.toList()));
+        comboBoxShiftDate.getItems().addAll(features.getAllWorkshift());
+        comboBoxShiftDateAssociate.getItems().addAll(features.getAllWorkshift());
     }
 
     private void showEmployees(final TableView view, final ObservableList<User> data) {

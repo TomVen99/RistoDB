@@ -662,6 +662,21 @@ public class FeaturesImpl implements Features{
         }
     }*/
 
+    @Override
+    public ObservableList<Date> getAllWorkshift() {
+        final String query = "select distinct date from workshifts";
+        try (Statement statement = connection.createStatement()) {
+            final ResultSet result = statement.executeQuery(query);
+            final ObservableList<Date> list = FXCollections.observableArrayList();
+            while (result.next()) {
+                list.add(result.getDate("date")); 
+            }
+            return list;
+        } catch (final SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private java.sql.Date fromDateToSQLDate (Date dateUtil){
         java.sql.Date sqlDate = new java.sql.Date(dateUtil.getTime());
         return sqlDate;

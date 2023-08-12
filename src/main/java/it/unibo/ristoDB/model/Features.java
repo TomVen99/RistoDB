@@ -145,5 +145,7 @@ public interface Features {
 
     Float viewAvaragePeoplePerTable(Date date);
 
+    ObservableList<Date> getAllWorkshift();
+
     
 }

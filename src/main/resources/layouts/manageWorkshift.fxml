@@ -13,7 +13,6 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualizza dipendenti di turno" wrappingWidth="167.68119748737445" />
-      <TextField fx:id="shiftDate" layoutX="16.0" layoutY="31.0" promptText="Data  (dd/mm/yyyy)" />
       <Button fx:id="viewEmployeesOnShiftButton" layoutX="16.0" layoutY="138.0" mnemonicParsing="false" onAction="#viewEmployeesOnShift" prefHeight="25.0" prefWidth="149.0" text="Visualizza">
          <font>
             <Font size="12.0" />
@@ -50,7 +49,6 @@
       <Text layoutX="192.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Associa cameriere al turno" wrappingWidth="167.68119748737445" />
       <Separator layoutX="356.0" layoutY="181.0" orientation="VERTICAL" prefHeight="220.0" prefWidth="7.0" />
       <ComboBox fx:id="comboBoxDayMoment" layoutX="16.0" layoutY="69.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
-      <TextField fx:id="shiftDateAssociate" layoutX="195.0" layoutY="205.0" promptText="Data  (dd/mm/yyyy)" />
       <ComboBox fx:id="comboBoxShiftAssociate" layoutX="195.0" layoutY="241.0" prefHeight="25.0" prefWidth="149.0" promptText="Turno" />
       <Button fx:id="associateButton" layoutX="195.0" layoutY="350.0" mnemonicParsing="false" onAction="#associateEmployeeShift" prefHeight="25.0" prefWidth="149.0" text="Associa" />
       <ComboBox fx:id="comboBoxEmployeeUserAssociate" layoutX="195.0" layoutY="279.0" prefWidth="150.0" promptText="Utente" />
@@ -59,5 +57,7 @@
             <Font size="10.0" />
          </font>
       </Text>
+      <ComboBox fx:id="comboBoxShiftDate" layoutX="16.0" layoutY="34.0" prefWidth="150.0" />
+      <ComboBox fx:id="comboBoxShiftDateAssociate" layoutX="195.0" layoutY="206.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
