@@ -23,9 +23,11 @@ import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.db.User;
+import it.unibo.ristoDB.view.BestProducts;
 import it.unibo.ristoDB.view.ReceiptsOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public class FeaturesImpl implements Features{
 
@@ -237,9 +239,6 @@ public class FeaturesImpl implements Features{
 
     @Override
     public void removeProduct(final int productId) {
-        /*if (checkDependencies(productId)) {
-            handleDependencies(productId);
-        }*/
         final String query = "DELETE FROM Products WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, productId);
@@ -274,9 +273,26 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public ObservableList<Product> viewBestSellingProducts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewBestFiveProducts'");
+    public ObservableList<BestProducts> viewBestSellingProducts() {
+        final String query = "select p.name, sum(od.quantity) as total from orders_details od"
+                + " join products p on od.product_ID = p.id"
+                + " where p.name != ?"
+                + " group by p.name"
+                + " order by total DESC"
+                + " limit 5";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setString(1, covered);
+                final ResultSet result = statement.executeQuery();
+                final ObservableList<BestProducts> list = FXCollections.observableArrayList();
+                while(result.next()) {
+                    list.add(new BestProducts(result.getString("name"), result.getInt("total")));
+                }
+                return list;
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override

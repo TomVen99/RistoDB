@@ -8,16 +8,20 @@ import java.util.stream.Collectors;
 
 import it.unibo.ristoDB.db.Category;
 import it.unibo.ristoDB.db.Product;
+import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.model.Features;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 public class BackOfficeController {
@@ -72,7 +76,7 @@ public class BackOfficeController {
     @FXML private TextField productPrice;
     @FXML private Button viewBestEmployeeButton;
     @FXML private Button viewBestSellingProductsButton;
-    @FXML private TableView<?> viewBestSellingProductsTableView;
+    @FXML private TableView<BestProducts> viewBestSellingProductsTableView;
     @FXML private Button viewAvarageExpenseButton;
     @FXML private ComboBox<Date> comboBoxChooseDate;
     @FXML private Label bestEmployeeLabel;
@@ -145,9 +149,19 @@ public class BackOfficeController {
 
     @FXML
     void viewBestSellingProducts(ActionEvent event) {
-        /*viewBestSellingProductsTableView.
-        features.viewBestSellingProducts();*/
+        showBestSellingProducts(viewBestSellingProductsTableView, features.viewBestSellingProducts());
     }
+
+    private void showBestSellingProducts(final TableView<BestProducts> view, final ObservableList<BestProducts> data) {
+            view.getColumns().clear();
+            final TableColumn<BestProducts, String> name = new TableColumn<>("Nome");
+            name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            final TableColumn<BestProducts, Integer> total = new TableColumn<>("Totale");
+            total.setCellValueFactory(new PropertyValueFactory<>("total"));
+            view.getColumns().addAll(name, total);
+            view.setItems(data);
+            System.out.println("stampato");
+        }
 
     @FXML
     void viewAvarageExpense(ActionEvent event) {

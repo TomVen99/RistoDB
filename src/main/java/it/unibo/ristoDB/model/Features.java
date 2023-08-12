@@ -10,8 +10,10 @@ import it.unibo.ristoDB.db.OrderDetail;
 import it.unibo.ristoDB.db.Product;
 import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.db.User;
+import it.unibo.ristoDB.view.BestProducts;
 import it.unibo.ristoDB.view.ReceiptsOrder;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public interface Features {
 
@@ -92,7 +94,7 @@ public interface Features {
      * 
      * @return a list with best seller products
      */
-    ObservableList<Product> viewBestSellingProducts();
+    ObservableList<BestProducts> viewBestSellingProducts();
 
     /**
      * 
