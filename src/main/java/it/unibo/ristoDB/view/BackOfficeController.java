@@ -136,7 +136,7 @@ public class BackOfficeController {
     /*possibile controllo aggiuntivo del parimerito */
     @FXML
     void viewBestEmployee(ActionEvent event) {
-        var bestEmployee = features.viewBestEmployee();
+        var bestEmployee = features.viewBestEmployee(comboBoxChooseDate.getSelectionModel().getSelectedItem());
         if(!bestEmployee.isEmpty()){
             String employee = bestEmployee.keySet().iterator().next();
             bestEmployeeLabel.setText(employee + " " + Float.toString(bestEmployee.get(employee)));
@@ -151,12 +151,14 @@ public class BackOfficeController {
 
     @FXML
     void viewAvarageExpense(ActionEvent event) {
-
+        viewAvarageExpenseLabel.setText(Float.toString(
+            features.viewAvarageExpense(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
     }   
 
     @FXML
     void viewAvaragePersPerTable(ActionEvent event) {
-
+        viewAvaragePersPerTableLabel.setText(Float.toString(
+            features.viewAvaragePeoplePerTable(comboBoxChooseDate.getSelectionModel().getSelectedItem())));   
     }
 
     @FXML
@@ -171,7 +173,8 @@ public class BackOfficeController {
 
     @FXML
     void viewTotalCovered(ActionEvent event) {
-
+        viewTotalCoveredLabel.setText(Integer.toString(
+            features.viewTotalCovered(comboBoxChooseDate.getSelectionModel().getSelectedItem())));
     }
 
 }

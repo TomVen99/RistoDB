@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +32,7 @@ public class FeaturesImpl implements Features{
     private final Connection connection;
     private int tableNumber;
     private String username;
+    private String covered = "coperto";
 
     public FeaturesImpl(Connection connection) {
         this.connection = connection;
@@ -247,8 +250,7 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public Map<String, Float> viewBestEmployee() {
-        java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+    public Map<String, Float> viewBestEmployee(Date date) {
         final String query = "select o.username, sum(od.quantity * p.price) as total from orders o"
             + " join orders_details od on o.date=od.date and o.time=od.time"
             + " join products p on od.product_ID = p.id"
@@ -257,7 +259,7 @@ public class FeaturesImpl implements Features{
             + " order by total DESC"
             + " limit 1";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-                statement.setDate(1, date);
+                statement.setDate(1, fromDateToSQLDate(date));
                 final ResultSet result = statement.executeQuery();
                 final Map<String, Float> bestEmployee = new HashMap<>();
                 if(result.next()) {
@@ -381,21 +383,46 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public void addOrder(Date date, Time time, int tableNumber, int employeeId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addOrder'");
-    }
-
-    @Override
     public Float viewAvarageExpense(Date date) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewAvarageExpense'");
+        final String query = "select (select sum(quantity * price) from orders_details od"
+                + " join products p on od.product_id = p.id"
+                + " join orders o on o.date = od.date and o.time = od.time"
+                + " where o.date = ?) / (select sum(quantity) as tot from orders_details od"
+                + " join products p on od.product_ID = p.id"
+                + " join orders o on od.date = o.date and o.time = od.time"
+                + " where od.date = ? and p.name = ? and o.closing_time is not null) as media";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setDate(1, fromDateToSQLDate(date));
+                statement.setDate(2, fromDateToSQLDate(date));
+                statement.setString(3, covered);
+                final ResultSet result = statement.executeQuery();
+                result.next();
+                return result.getFloat("media");
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override
-    public Integer viewTotalCovered(Date date) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewTotalCovered'");
+    public int viewTotalCovered(Date date) {
+        final String query = "select od.date, sum(quantity) as tot from orders_details od"
+                + " join products p on od.product_ID = p.id"
+                + " join orders o on od.date = o.date and o.time = od.time"
+                + " where od.date = ? and p.name = ? and o.closing_time is not null"
+                + " group by od.date";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setDate(1, fromDateToSQLDate(date));
+                statement.setString(2, covered);
+                final ResultSet result = statement.executeQuery();
+                result.next();
+                return result.getInt("tot");
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
     }
 
     @Override
@@ -544,7 +571,7 @@ public class FeaturesImpl implements Features{
     public void closeTable(int table) {
         final String query = "UPDATE Orders "
                 + " SET closing_time = ?"
-                + " WHERE number = ?";
+                + " WHERE number = ? and closing_time is null";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setTime(1, java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS)));
             statement.setInt(2, table);
@@ -560,18 +587,6 @@ public class FeaturesImpl implements Features{
 
     @Override
     public boolean verifyCovered(int tableNumber) {
-        /*final String query = "select p.name, SUM(od.quantity) as quantity from orders_details as od"
-                + " join products as p"
-                + " on p.id = od.product_id"
-                + " where od.date in (select o.date from Orders as o"
-                + " where o.number = ?)"
-                + " and od.time in (select o.time from Orders as o"
-                + " where o.number = ?) and"
-                + " p.name = ? "
-                + " group by p.name"
-                + " having SUM(od.quantity) > 0 and  SUM(od.quantity) <= (select t.max_people from tables t"
-                + " where t.number = ?)";
-                        ;//and o.closing_time is NULL)";/**********************;*/
             final String query = "select t.number, t.max_people, SUM(od.quantity) as quantity from tables t" 
             + " join orders o on o.number = t.number" 
                     + " join orders_details od on o.date = od.date and o.time = od.time" 
@@ -580,14 +595,10 @@ public class FeaturesImpl implements Features{
                     + " group by t.number, t.max_people" 
                     + " having SUM(od.quantity) <= t.max_people and SUM(od.quantity) > 0;";
             try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-                statement.setString(1, "coperto");
-                //statement.setInt(1, tableNumber);
+                statement.setString(1, covered);
                 statement.setInt(2, tableNumber);
-                //statement.setInt(4, tableNumber);
                 final ResultSet result = statement.executeQuery();
                 if(result.next()) {
-                    /*System.out.println(result.getString("name"));
-                    System.out.println(result.getInt("quantity"));*/
                     return true;
                 }
                 return false;
@@ -597,4 +608,46 @@ public class FeaturesImpl implements Features{
                 throw new IllegalStateException(e);
             }
     }    
+
+    @Override
+    public Float viewAvaragePeoplePerTable(Date date) {
+        final String query = "select (select sum(quantity) as tot from orders_details od"
+                + " join products p on od.product_ID = p.id"
+                + " join orders o on od.date = o.date and o.time = od.time"
+                + " where od.date = ? and p.name = ? and o.closing_time is not null)"
+                + " /"
+                + " (select sum(giriPerTavolo) as tot"
+                    + " from( select count(distinct o.closing_time) as giriPerTavolo"
+                    + " from orders_details od"
+                    + " join orders o on o.date = od.date and o.time = od.time"
+                + " where o.date = ?) as subQuery) as media";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+                statement.setDate(1, fromDateToSQLDate(date));
+                statement.setString(2, covered);
+                statement.setDate(3, fromDateToSQLDate(date));
+                final ResultSet result = statement.executeQuery();
+                result.next();
+                return result.getFloat("media");
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+    }
+
+    /*private java.sql.Date fromStringToSQLDate (String dateString){
+        try{
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date date = sdf1.parse(dateString);
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            return sqlDate;
+        }catch(ParseException e){
+            System.out.println(e);
+        }
+    }*/
+
+    private java.sql.Date fromDateToSQLDate (Date dateUtil){
+        java.sql.Date sqlDate = new java.sql.Date(dateUtil.getTime());
+        return sqlDate;
+    }
 }

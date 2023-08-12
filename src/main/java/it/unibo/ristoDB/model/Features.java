@@ -73,11 +73,6 @@ public interface Features {
     void addOrderDetails(int productId, int quantity);
 
     /**
-     * Add an order
-     */
-    void addOrder(Date date, Time time, int tableNumber, int employeeId);
-
-    /**
      * Show total of the receipt
      */
     float showReceiptTotal(int tableNumber);
@@ -91,7 +86,7 @@ public interface Features {
      * 
      * @return a map with the name of the best employee and how much he sells 
      */
-    Map<String,Float> viewBestEmployee();
+    Map<String,Float> viewBestEmployee(Date date);
 
     /**
      * 
@@ -116,7 +111,7 @@ public interface Features {
      * @param date to find
      * @return total of covered of the day
      */
-    Integer viewTotalCovered(Date date);
+    int viewTotalCovered(Date date);
 
     /***
      * displays all days where there is at least one order
@@ -145,6 +140,8 @@ public interface Features {
     void closeTable(int table);
 
     boolean verifyCovered(int tableNumber);
+
+    Float viewAvaragePeoplePerTable(Date date);
 
     
 }
