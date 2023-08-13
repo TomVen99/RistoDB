@@ -98,12 +98,6 @@ public interface Features {
 
     /**
      * 
-     * @return day when resturant is busiest
-     */
-    Date viewBusyDay();
-
-    /**
-     * 
      * @param date to find
      * @return avarage expense of that day
      */

@@ -296,18 +296,11 @@ public class FeaturesImpl implements Features{
     }
 
     @Override
-    public Date viewBusyDay() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewBusyMoment'");
-    }
-
-    @Override
     public void addOrderDetails(int productId, int quantity) {
         /*devo impostare il tavolo busy true, verifiare che ci siano i coperti */
         java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
         java.sql.Time time = java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
         addOrder(date,time);
-        System.out.println("qui sono arrivato *************************");
         final String query = "INSERT INTO Orders_Details "
                 + " VALUES (?,?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -329,7 +322,6 @@ public class FeaturesImpl implements Features{
         final String query = "INSERT INTO Orders "
                 + " (date,time,username,number)"
                 + " VALUES (?,?,?,?)";
-        System.out.println("numero tavolo "+ tableNumber + "username "+ username);
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setDate(1, date);
             statement.setTime(2, time);
