@@ -72,9 +72,9 @@ public class FrontOfficeController {
     void showReceipt(ActionEvent event) {
         int table = comboBoxSelectTable.getSelectionModel().getSelectedItem();
         if(features.verifyCovered(table)) {
-            System.out.println("verifyCovered ritornatp true");
             totalLabel.setText(Float.toString(features.showReceiptTotal(table)));
             showReceiptOrder(orderListTableView, features.showReceiptOrder(table));
+            features.addReceipt(table);
             features.closeTable(table);
         }else {
             errorMessage.setOpacity(100);

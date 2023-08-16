@@ -6,14 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +22,6 @@ import it.unibo.ristoDB.view.BestProducts;
 import it.unibo.ristoDB.view.ReceiptsOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 public class FeaturesImpl implements Features{
 
@@ -162,7 +156,6 @@ public class FeaturesImpl implements Features{
         }
     }
 
-    /*****Devo verificare se l'user va bene e non è duplicato */
     @Override
     public boolean addEmployee(final String name, final String lastName, final String username, final String password) {
         if(!findUser(username) && name != "" && lastName != "" && username != "" && password != ""){
@@ -626,8 +619,8 @@ public class FeaturesImpl implements Features{
                 + " /"
                 + " (select sum(giriPerTavolo) as tot"
                     + " from( select count(distinct o.closing_time) as giriPerTavolo"
-                    + " from orders_details od"
-                    + " join orders o on o.date = od.date and o.time = od.time"
+						+ " from orders_details od"
+						+ " join orders o on o.date = od.date and o.time = od.time"
                 + " where o.date = ?) as subQuery) as media";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
                 statement.setDate(1, fromDateToSQLDate(date));
@@ -643,16 +636,25 @@ public class FeaturesImpl implements Features{
             }
     }
 
-    /*private java.sql.Date fromStringToSQLDate (String dateString){
-        try{
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-            java.util.Date date = sdf1.parse(dateString);
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            return sqlDate;
-        }catch(ParseException e){
-            System.out.println(e);
-        }
-    }*/
+    @Override
+    public void addReceipt(int tableNumber) {
+        java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+        java.sql.Time time = java.sql.Time.valueOf(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+        final String query = "INSERT INTO Receipts "
+                    + " (date, number, time)"
+                    + " VALUES (?,?,?)";
+            try {
+                PreparedStatement statement = this.connection.prepareStatement(query);
+                statement.setDate(1, date);
+                statement.setInt(2, tableNumber);
+                statement.setTime(3, time);
+                statement.executeUpdate();
+            } catch (final SQLIntegrityConstraintViolationException e) {
+                throw new IllegalArgumentException(e);
+            } catch (final SQLException e) {
+                throw new IllegalStateException(e);
+            }
+    }
 
     @Override
     public ObservableList<Date> getAllWorkshift() {

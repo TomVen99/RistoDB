@@ -80,6 +80,11 @@ public interface Features {
     float showReceiptTotal(int tableNumber);
 
     /**
+     * Add new receipt
+     */
+    void addReceipt(int tableNumber);
+
+    /**
      * Show total of the receipt
      */
     ObservableList<ReceiptsOrder> showReceiptOrder(int tableNumber);
