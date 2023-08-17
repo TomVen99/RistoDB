@@ -25,7 +25,7 @@ public class LoginController {
     @FXML private TextField username;
 
     /** The database name used to login. */
-    private static final String DB_NAME = "RistoDB_test";/*"RistoDB_new";*/
+    private static final String DB_NAME = "RistoDB";
     private Features features;
     private final ViewImpl view;
 
