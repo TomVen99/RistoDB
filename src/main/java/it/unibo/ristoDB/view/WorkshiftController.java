@@ -75,7 +75,8 @@ public class WorkshiftController {
             && features.findUser(comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem())){
                 features.associateEmployeeShift(sqlDate,
                     comboBoxShiftAssociate.getSelectionModel().getSelectedItem(),
-                    comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem());         
+                    comboBoxEmployeeUserAssociate.getSelectionModel().getSelectedItem());
+                    System.out.println("associazione avvenuta");                 
         }else{
             System.out.println("errore ricerca utente o turno non presente");
         }
@@ -104,7 +105,6 @@ public class WorkshiftController {
         comboBoxDayMoment.getItems().addAll(shiftTipology);
         comboBoxShiftAssociate.getItems().addAll(shiftTipology);
         users = features.viewAllUsers();
-        users.remove(0);
         comboBoxEmployeeUserAssociate.getItems().clear();
         comboBoxEmployeeUserAssociate.getItems().addAll(users.stream().map(u->u.getUsername()).collect(Collectors.toList()));
         comboBoxShiftDate.getItems().addAll(features.getAllWorkshift());

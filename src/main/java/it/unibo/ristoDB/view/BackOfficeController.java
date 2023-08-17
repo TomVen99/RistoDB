@@ -1,18 +1,15 @@
 package it.unibo.ristoDB.view;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import it.unibo.ristoDB.db.Category;
 import it.unibo.ristoDB.db.Product;
-import it.unibo.ristoDB.db.Table;
 import it.unibo.ristoDB.model.Features;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,10 +44,6 @@ public class BackOfficeController {
         dates = features.viewAllDate();
         comboBoxChooseDate.getItems().addAll(dates);
         errorMessage.setOpacity(0);
-        /*categories.add(new Category(0, "uno", new ArrayList<>()));
-        categories.add(new Category(1, "due", new ArrayList<>()));
-        Date d = new Date();
-        dates.add(d);*/
         comboBoxCategoryAddProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
         comboBoxCategoryRemovingProduct.getItems().addAll(categories.stream().map(c->c.getName()).collect(Collectors.toList()));
     }
