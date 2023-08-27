@@ -56,8 +56,7 @@ create table Receipts (
      date date not null,
      number int not null,
      time time not null,
-     constraint ID_Receipts_ID primary key (ID, date),
-     constraint FKissue_ID unique (number));
+     constraint ID_Receipts_ID primary key (ID, date, number));
 
 create table Shifts_Assignment (
      username varchar(20) not null,
@@ -150,9 +149,6 @@ create index FKinclude_IND
 
 create unique index ID_Receipts_IND
      on Receipts (ID, date);
-
-create unique index FKissue_IND
-     on Receipts (number);
 
 create unique index SID_Shifts_Assignment_IND
      on Shifts_Assignment (username, date, day_Moment);

@@ -32,7 +32,7 @@ public class LoginController {
     public LoginController(ViewImpl view) {
         this.view = view;
         try {
-            final ConnectionProvider prov = new ConnectionProvider("admin", "admin", DB_NAME);
+            final ConnectionProvider prov = new ConnectionProvider("admin", "ProgettoDB2023", DB_NAME);
             final Connection connection = prov.getMySQLConnection();
             view.addConnection(connection);
             System.out.println("connessione avvenuta");
